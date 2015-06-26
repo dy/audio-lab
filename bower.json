@@ -1,0 +1,23 @@
+{
+  "name": "spectrogram",
+  "main": "spectrogram.js",
+  "version": "0.0.2",
+  "homepage": "https://github.com/miguelmota/spectrogram",
+  "authors": [
+    "Miguel Mota <miguelmota2@gmail.com>"
+  ],
+  "description": "Audio spectrogram in canvas.",
+  "keywords": [
+    "audio",
+    "spectrogram",
+    "canvas"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "license": "MIT"
+}

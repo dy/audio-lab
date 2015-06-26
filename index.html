@@ -1,0 +1,72 @@
+<!doctype html>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="Audio lab">
+<meta name="keyword" content="">
+<meta name="author" content="Deema Ywanov" />
+<meta name="copyright" content="© 2015 Dmitry Ivanov" />
+<meta name="contact" content="df.creative@gmail.com" />
+<meta http-equiv="content-language" content="en" />
+<meta property="og:title" content="Audio lab"/>
+<meta property="og:type" content="save.saves"/>
+<meta property="og:image" content="https://raw.githubusercontent.com/dfcreative/audio-lab"/>
+<meta property="og:url" content="http://dfcreative.github.io/audio-lab"/>
+<meta property="og:description" content="Audio lab"/>
+
+<title>Audio lab</title>
+
+<link rel="author" href="https://github.com/dfcreative"/>
+
+<link rel="stylesheet" type="text/css" href="./index.css">
+
+<style>
+.play {
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 40px;
+	height: 40px;
+}
+</style>
+
+<button class="play">▶</button>
+
+<script type="text/javascript" src="./bundle.js"></script>
+
+<script type="text/javascript">
+	var q = require('queried');
+	var on = require('emmy/on');
+	var lab = require('audio-lab');
+	var ctx = lab.context;
+	var PI = Math.PI;
+
+
+	//TODO: move this to app rendering
+	var playEl = q('.play');
+	on(playEl, 'click', function () {
+		if (lab.isActive) {
+			lab.stop();
+			playEl.innerHTML = '▶';
+		}
+		else {
+			lab.start();
+			playEl.innerHTML = '■';
+		}
+	});
+
+
+	//setup default setup
+	var generator = new lab.Generator(function (t) {
+		return Math.cos(2*PI*5*t) + Math.cos(2*PI*10*t) + Math.cos(2*PI*20*t) + Math.cos(2*PI*50*t);
+	});
+
+	//output audio
+	generator.connect(ctx.destination);
+
+	// var analyzer = new lab.Script(function (t) {
+
+	// });
+</script>
