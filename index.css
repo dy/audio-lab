@@ -1,3 +1,5 @@
+@import './node_modules/audio-stats/index.css';
+
 .block {
 	position: absolute;
 	min-width: 60px;

@@ -4,3 +4,4 @@ var lab = module.exports = require('./lib/application');
 lab.Block = require('./lib/block');
 lab.Generator = require('./lib/generator');
 lab.Script = require('./lib/script');
+lab.Analyser = require('./lib/analyser');

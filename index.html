@@ -22,6 +22,9 @@
 <link rel="stylesheet" type="text/css" href="./index.css">
 
 <style>
+body {
+	font-family: sans-serif;
+}
 .play {
 	display: block;
 	position: absolute;
@@ -63,10 +66,10 @@
 		return Math.cos(2*PI*5*t) + Math.cos(2*PI*10*t) + Math.cos(2*PI*20*t) + Math.cos(2*PI*50*t);
 	});
 
+	var analyser = new lab.Analyser('frequency');
+
+
 	//output audio
-	generator.connect(ctx.destination);
-
-	// var analyzer = new lab.Script(function (t) {
-
-	// });
+	generator.connect(analyser);
+	analyser.connect(ctx.destination);
 </script>

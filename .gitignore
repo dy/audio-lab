@@ -101,3 +101,5 @@ tmp
 #######################
 .VimballRecord
 .netrwhist
+
+bundle.*

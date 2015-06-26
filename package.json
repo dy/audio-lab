@@ -24,6 +24,7 @@
   "homepage": "https://github.com/dfcreative/audio-lab",
   "dependencies": {
     "audio-context": "^0.1.0",
+    "audio-stats": "^1.1.5",
     "autosize": "^3.0.6",
     "domify": "^1.3.3",
     "draggy": "^1.1.9",
