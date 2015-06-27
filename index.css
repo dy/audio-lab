@@ -1,24 +1,50 @@
 @import './node_modules/audio-stats/index.css';
+@import './node_modules/dialog-component/dialog.css';
+@import './node_modules/overlay-component/overlay.css';
+
+
+[hidden] {
+	display: none!important;
+}
 
 .audio-lab-container {
 	padding-top: 2rem;
-	display: flex;
-	flex-flow: row wrap;
+	min-height: 30rem;
+	/*display: flex;*/
+	/*flex-flow: row wrap;*/
 }
 
 .block {
-	position: relative;
+	z-index: 1;
+	display: inline-block;
+	/*position: relative;
+	box-shadow: 0 1px 6px rgba(10,20,30,.2);
     flex: 1 0 200px;
 	min-width: 60px;
 	min-height: 40px;
 	background: white;
-	box-shadow: 0 1px 6px rgba(10,20,30,.2);
 	border-radius: 2px;
 	padding: .5rem;
-	margin: .5rem;
+	margin: .5rem;*/
 }
-
-.block-generator-code {
+.block:hover .block-thumbnail {
+}
+.block-thumbnail {
+	position: relative;
+	cursor: default;
+	width: 4rem;
+	height: 4rem;
+	text-align: center;
+	line-height: 4rem;
+	border-radius: 2rem;
+}
+.block-thumbnail svg {
+	display: inline-block;
+	vertical-align: middle;
+	max-width: 60%;
+	max-height: 60%;
+}
+.block-code {
 	display: block;
 	tab-size: 4;
 	width: 100%;
@@ -26,8 +52,14 @@
 	padding: 0;
 }
 
+.block-generator .block-thumbnail {
+	font-family: serif;
+	font-style: italic;
+	font-size: 2.4rem;
+	font-weight: bolder;
+}
+
 .block-analyser {
-	min-width: 200px;
 }
 .block-analyser .audio-stats {
 	position: absolute;
@@ -35,4 +67,26 @@
 	left: 1.5rem;
 	bottom: 1rem;
 	right: 2.5rem;
+}
+
+
+.connection {
+	z-index: 0;
+	position: absolute;
+	min-width: 40px;
+	min-height: 40px;
+	transform-origin: 0 50%;
+}
+.connection:after {
+	content: '';
+	position: absolute;
+	left: 2rem;
+	right: 2rem;
+	top: 50%;
+	height: 3px;
+	transition: .2s ease-in background;
+	background: rgba(0,0,0,.1);
+}
+.connection:hover:after {
+	background: rgba(0,0,0,1);
 }

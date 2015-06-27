@@ -46,7 +46,6 @@ body {
 	var q = require('queried');
 	var on = require('emmy/on');
 	var lab = require('audio-lab');
-	var ctx = lab.context;
 	var PI = Math.PI;
 
 
@@ -71,8 +70,10 @@ body {
 
 	var analyser = new lab.Analyser('frequency');
 
+	var output = new lab.Output();
+
 
 	//output audio
 	generator.connect(analyser);
-	analyser.connect(ctx.destination);
+	analyser.connect(output);
 </script>
