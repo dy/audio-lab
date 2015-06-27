@@ -48,6 +48,9 @@ body {
 	var lab = require('audio-lab');
 	var PI = Math.PI;
 
+	//start app
+	lab.init();
+
 
 	//TODO: move this to app rendering
 	var playEl = q('.play');
@@ -61,7 +64,4 @@ body {
 			playEl.innerHTML = '■';
 		}
 	});
-
-
-	lab.load();
 </script>

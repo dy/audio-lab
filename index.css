@@ -54,13 +54,6 @@
 	padding: 0;
 }
 
-.block-generator .block-thumbnail {
-	font-family: serif;
-	font-style: italic;
-	font-size: 2.4rem;
-	font-weight: bolder;
-}
-
 .block-analyser {
 }
 .block-analyser .audio-stats {
@@ -91,4 +84,28 @@
 }
 .connection:hover:after {
 	background: rgba(0,0,0,1);
+}
+
+
+.appender {
+	max-width: 50vw;
+	display: flex;
+	flex-flow: row wrap;
+
+}
+.appender-item {
+	position: relative;
+	flex: 1 0 4rem;
+	margin: .5rem;
+	cursor: pointer;
+	width: 4rem;
+	height: 4rem;
+	text-align: center;
+	line-height: 4rem;
+}
+.appender-item svg {
+	display: inline-block;
+	vertical-align: middle;
+	max-width: 60%;
+	max-height: 60%;
 }
