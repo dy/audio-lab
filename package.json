@@ -33,6 +33,7 @@
     "get-uid": "^1.0.1",
     "global": "^4.3.0",
     "has-dom": "^1.0.0",
+    "inherits": "^2.0.1",
     "is-function": "^1.0.1",
     "json3": "^3.3.2",
     "mucss": "^1.0.0",

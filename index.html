@@ -63,17 +63,19 @@ body {
 	});
 
 
+	lab.load();
+
 	//setup default setup
-	var generator = new lab.Generator(function (t) {
-		return Math.cos(2*PI*5*t) + Math.cos(2*PI*10*t) + Math.cos(2*PI*20*t) + Math.cos(2*PI*50*t);
-	});
+	// var generator = new lab.Generator(function (t) {
+	// 	return Math.cos(2*PI*5*t) + Math.cos(2*PI*10*t) + Math.cos(2*PI*20*t) + Math.cos(2*PI*50*t);
+	// });
 
-	var analyser = new lab.Analyser('frequency');
+	// var analyser = new lab.Analyser('frequency');
 
-	var output = new lab.Output();
+	// var output = new lab.Output();
 
+	// var radio = new lab.Radio();
 
-	//output audio
-	generator.connect(analyser);
-	analyser.connect(output);
+	// generator.connect(analyser);
+	// analyser.connect(output);
 </script>
