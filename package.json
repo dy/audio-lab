@@ -32,6 +32,7 @@
     "has-dom": "^1.0.0",
     "is-function": "^1.0.1",
     "queried": "^1.4.1",
+    "webaudio": "^2.0.0",
     "xtend": "^4.0.0"
   }
 }
