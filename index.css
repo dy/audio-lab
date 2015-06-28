@@ -24,7 +24,7 @@
 }
 .block-thumbnail {
 	z-index: 1;
-	box-shadow: 0 0 0 1px lightgray;
+	/*box-shadow: 0 0 0 1px lightgray;*/
 	position: relative;
 	cursor: default;
 	width: 4rem;
@@ -43,7 +43,7 @@
 	position: absolute;
 	top: 1rem;
 	left: 2rem;
-	box-shadow: 0 0 0 1px lightgray;
+	/*box-shadow: 0 0 0 1px lightgray;*/
 	width: 4rem;
 	height: 2rem;
 	transform-origin: 0 50%;
@@ -100,8 +100,8 @@
 	z-index: 0;
 	position: absolute;
 	min-width: 4rem;
-	min-height: 4rem;
-	box-shadow: 0 0 0 1px lightgray;
+	min-height: 2rem;
+	/*box-shadow: 0 0 0 1px lightgray;*/
 	transform-origin: 0 50%;
 	color: rgb(216, 216, 216);
 }
@@ -112,11 +112,34 @@
 	right: 2.2rem;
 	top: 50%;
 	height: 0;
-	transition: .2s ease-in background;
+	transition: .2s ease-in color;
+	margin-top: -1px;
 	border: 1px solid;
 }
 .connection:hover:after {
-	color: black;
+	/*color: black;*/
+}
+.connection-start, .connection-end {
+	position: absolute;
+	z-index: 2;
+	left: 2rem;
+	top: 0rem;
+	height: 0;
+	width: 0;
+	border-left: 1rem solid;
+	border-top: 1rem solid transparent;
+	border-bottom: 1rem solid transparent;
+	border-right: none;
+	transition: .2s ease-in color;
+	color: transparent;
+}
+.connection-end {
+	left: auto;
+	right: 2rem;
+}
+.connection-connected:hover .connection-end,
+.connection-connected:hover .connection-start {
+	color: rgb(216, 216, 216);
 }
 
 
@@ -148,6 +171,9 @@
 /** When connecting process procurs */
 .connecting .block-in {
 	opacity: 1;
+}
+.connecting .connection-connected {
+	z-index: -1;
 }
 .block-connection-target .block-in {
 	color: black;
