@@ -13,6 +13,7 @@
 	min-height: 30rem;
 }
 
+/** Blocks basics */
 .block {
 	position: absolute;
 	top: 0;
@@ -22,13 +23,15 @@
 .block:hover .block-thumbnail {
 }
 .block-thumbnail {
-	z-index: 2;
+	z-index: 1;
+	box-shadow: 0 0 0 1px lightgray;
 	position: relative;
 	cursor: default;
 	width: 4rem;
 	height: 4rem;
 	text-align: center;
 	line-height: 4rem;
+	border-radius: 2rem;
 }
 .block-thumbnail svg {
 	display: inline-block;
@@ -40,47 +43,42 @@
 	position: absolute;
 	top: 1rem;
 	left: 2rem;
-	width: 2rem;
+	box-shadow: 0 0 0 1px lightgray;
+	width: 4rem;
 	height: 2rem;
 	transform-origin: 0 50%;
-	z-index: 1;
+	z-index: 0;
 	opacity: 0;
+	color: rgb(215, 220, 219);
 	transition: .2s ease-in opacity;
 }
 .block-out:after, .block-in:after {
 	content: '';
 	position: absolute;
-	right: -1rem;
+	right: 1rem;
 	top: 0;
-	color: rgb(215, 220, 219);
 	border-left: 1rem solid;
 	border-top: 1rem solid transparent;
 	border-bottom: 1rem solid transparent;
 	border-right: none;
 }
 .block-in {
+	color: rgb(225,222,222);
 	transform: rotate(180deg);
 }
 .block-in:after {
-	color: rgb(225,222,222);
 	border-right: 1rem solid;
 	border-top: 1rem solid transparent;
 	border-bottom: 1rem solid transparent;
 	border-left: none;
 }
-.block-connect-target {
-	background: rgb(215, 220, 219);
-}
 .block:hover .block-out,
-.block:hover .block-in,
-.block-connect-source .block-out {
+.block:hover .block-in {
 	opacity: 1;
 }
 
-.audio-lab-container.connecting .block-in:not(.connection-end) {
-	opacity: 1;
-}
 
+/** Specific blocks */
 .block-code {
 	display: block;
 	tab-size: 4;
@@ -88,8 +86,6 @@
 	margin: 0;
 	padding: 0;
 }
-
-
 .block-analyser .audio-stats {
 	position: absolute;
 	top: 1rem;
@@ -99,12 +95,15 @@
 }
 
 
+/** Connections */
 .connection {
 	z-index: 0;
 	position: absolute;
 	min-width: 4rem;
 	min-height: 4rem;
+	box-shadow: 0 0 0 1px lightgray;
 	transform-origin: 0 50%;
+	color: rgb(216, 216, 216);
 }
 .connection:after {
 	content: '';
@@ -112,10 +111,9 @@
 	left: 2.2rem;
 	right: 2.2rem;
 	top: 50%;
-	height: 3px;
-	margin-top: -2px;
+	height: 0;
 	transition: .2s ease-in background;
-	background: rgb(216, 216, 216);
+	border: 1px solid;
 }
 .connection:hover:after {
 	background: rgba(0,0,0,1);
@@ -143,4 +141,17 @@
 	vertical-align: middle;
 	max-width: 60%;
 	max-height: 60%;
+}
+
+
+
+/** When connecting process procurs */
+.connecting .block-in {
+	opacity: 1;
+}
+.block-connection-target .block-in {
+	color: black;
+}
+.connection-available {
+	color: black;
 }
