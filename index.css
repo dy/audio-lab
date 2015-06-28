@@ -109,6 +109,11 @@
 }
 
 
+input {
+	display: block;
+}
+
+
 /** Connections */
 .connection {
 	z-index: 0;

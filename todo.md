@@ -1,3 +1,4 @@
+* Rotate inputs always so to be closer to mouse; rotate outputs vv.
 * Move & delete connections
 * Drag back end of connection
 * Make destination inappendable indeletable singleton
