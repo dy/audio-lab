@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "watch": "watchify -t babelify -r ./index:audio-lab -d -o bundle.js",
-    "build": "browserify -t babelify -r ./index:audio-lab | ccjs - --language_in=ECMASCRIPT5 > bundle.js",
+    "build": "npm run build-js && npm run build-css && npm run build-html",
+    "build-js": "browserify -t babelify -r ./index:audio-lab | uglifyjs -c -- > _demo/bundle.js",
+    "build-css": "postcss -u postcss-import -u autoprefixer -u cssnano index.css -o _demo/index.css ",
+    "build-html": "cp index.html _demo/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -48,6 +51,11 @@
     "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "babelify": "^6.1.2"
+    "autoprefixer": "^5.2.0",
+    "babelify": "^6.1.2",
+    "postcss": "^4.1.13",
+    "postcss-cli": "^1.3.1",
+    "postcss-import": "^6.0.0",
+    "uglify-js": "^2.4.23"
   }
 }
