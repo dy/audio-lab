@@ -97,6 +97,9 @@
 	margin: 0;
 	padding: 0;
 }
+.block-input {
+	width: 100%;
+}
 .block-analyser .audio-stats {
 	position: absolute;
 	top: 1rem;
