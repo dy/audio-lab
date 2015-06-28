@@ -28,40 +28,14 @@
 body {
 	font-family: sans-serif;
 }
-.play {
-	display: block;
-	position: absolute;
-	right: 0;
-	top: 0;
-	width: 40px;
-	height: 40px;
-}
 </style>
 
-<button class="play">▶</button>
+<div class="app-container"></div>
 
 <script type="text/javascript" src="./bundle.js"></script>
 
 <script type="text/javascript">
-	var q = require('queried');
-	var on = require('emmy/on');
-	var lab = require('audio-lab');
-	var PI = Math.PI;
+	var lab = require('audio-lab').init({
 
-	//start app
-	lab.init();
-
-
-	//TODO: move this to app rendering
-	var playEl = q('.play');
-	on(playEl, 'click', function () {
-		if (lab.isActive) {
-			lab.stop();
-			playEl.innerHTML = '▶';
-		}
-		else {
-			lab.start();
-			playEl.innerHTML = '■';
-		}
 	});
 </script>

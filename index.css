@@ -20,6 +20,17 @@
 	left: 0;
 	border-radius: 2rem;
 }
+.block-error:after {
+	content: '';
+	background: rgb(255,200,200);
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 3px;
+	right: -30%;
+	transform-origin: 0 0;
+	transform: rotate(45deg);
+}
 .block:hover .block-thumbnail {
 }
 .block-thumbnail {

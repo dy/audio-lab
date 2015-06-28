@@ -1,3 +1,6 @@
+* Move & delete connections
+* Drag back end of connection
+* Make destination inappendable indeletable singleton
 * Drag connection = drag both ends
 * Manage connection in/out (make able to create and connect new items)
 * Make poppy
