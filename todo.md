@@ -1,13 +1,17 @@
 * Rotate inputs always so to be closer to mouse; rotate outputs vv.
 * Move & delete connections
 * Drag back end of connection
-* Make destination inappendable indeletable singleton
 * Drag connection = drag both ends
-* Manage connection in/out (make able to create and connect new items)
 * Make poppy
 * Make draggy update container size (body might change size)
 * Audio weighting
 * Make resizable blocks
+
+# Compress UI
+* Make graphs on connections
+* Make connected connections replaceable instantly
+* Make volume regulators on connections
+*
 
 
 ## Generators
