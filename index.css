@@ -7,6 +7,7 @@
 	display: none!important;
 }
 
+
 .audio-lab-container {
 	padding-top: 2rem;
 	min-height: 30rem;
@@ -46,9 +47,6 @@
 	opacity: 0;
 	transition: .2s ease-in opacity;
 }
-.block:hover .block-out, .block:hover .block-in {
-	opacity: 1;
-}
 .block-out:after, .block-in:after {
 	content: '';
 	position: absolute;
@@ -70,7 +68,18 @@
 	border-bottom: 1rem solid transparent;
 	border-left: none;
 }
+.block-connect-target {
+	background: rgb(215, 220, 219);
+}
+.block:hover .block-out,
+.block:hover .block-in,
+.block-connect-source .block-out {
+	opacity: 1;
+}
 
+.audio-lab-container.connecting .block-in:not(.connection-end) {
+	opacity: 1;
+}
 
 .block-code {
 	display: block;
@@ -106,7 +115,7 @@
 	height: 3px;
 	margin-top: -2px;
 	transition: .2s ease-in background;
-	background: rgba(0,0,0,.1);
+	background: rgb(216, 216, 216);
 }
 .connection:hover:after {
 	background: rgba(0,0,0,1);
