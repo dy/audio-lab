@@ -54,7 +54,7 @@
 	position: absolute;
 	right: -1rem;
 	top: 0;
-	color: rgb(212, 244, 229);
+	color: rgb(215, 220, 219);
 	border-left: 1rem solid;
 	border-top: 1rem solid transparent;
 	border-bottom: 1rem solid transparent;
@@ -64,7 +64,7 @@
 	transform: rotate(180deg);
 }
 .block-in:after {
-	color: rgb(255,190,190);
+	color: rgb(225,222,222);
 	border-right: 1rem solid;
 	border-top: 1rem solid transparent;
 	border-bottom: 1rem solid transparent;
@@ -93,8 +93,8 @@
 .connection {
 	z-index: 0;
 	position: absolute;
-	min-width: 40px;
-	min-height: 40px;
+	min-width: 4rem;
+	min-height: 4rem;
 	transform-origin: 0 50%;
 }
 .connection:after {
