@@ -1,3 +1,4 @@
+* for source code - add list of substack’s studio codes
 * Rotate inputs always so to be closer to mouse; rotate outputs vv.
 * Move & delete connections
 * Drag back end of connection
@@ -6,6 +7,8 @@
 * Make draggy update container size (body might change size)
 * Audio weighting
 * Make resizable blocks
+* History (ctrl + z)
+
 
 # Compress UI
 * Make graphs on connections
