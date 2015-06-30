@@ -1,3 +1,9 @@
+* Deleter
+* Rope analysers
+* Hide analyser block
+* Poppy
+* Replace dialog
+* Oscillators interface
 * for source code - add list of substack’s studio codes
 * Rotate inputs always so to be closer to mouse; rotate outputs vv.
 * Move & delete connections
