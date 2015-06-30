@@ -1,6 +1,6 @@
 {
   "name": "audio-lab",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Audio lab",
   "main": "index.js",
   "scripts": {
