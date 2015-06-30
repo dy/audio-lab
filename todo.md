@@ -2,6 +2,8 @@
 * Rope analysers
 * Hide analyser block
 * Poppy
+* Make app an instance, not the singleton, to reuse it multiple times.
+	* E.g. a block might want to create sub-app to capture it’s output.
 * Replace dialog
 * Oscillators interface
 * for source code - add list of substack’s studio codes
@@ -14,6 +16,7 @@
 * Audio weighting
 * Make resizable blocks
 * History (ctrl + z)
+* Add node-version, with radio station blocks etc
 
 
 # Compress UI

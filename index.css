@@ -8,10 +8,12 @@
 }
 
 
-.audio-lab-container {
+.audio-lab {
+	position: relative;
 	padding-top: 2rem;
 	min-height: 30rem;
 }
+
 
 /** Blocks basics */
 .block {
@@ -162,6 +164,7 @@ input {
 }
 
 
+/** Appender dialog */
 .appender {
 	max-width: 50vw;
 	display: flex;
@@ -185,6 +188,35 @@ input {
 	max-height: 60%;
 }
 
+
+/** Deleter during drag */
+.deleter {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	opacity: 0;
+	transform: translate3d(0px, 100px, 0);
+	transition: .25s ease-in opacity, .15s ease-out transform;
+}
+.deleter:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	border-radius: 1rem;
+	border: 2px dashed rgba(225,225,225,1);
+	margin: .5rem;
+}
+.dragging .deleter {
+	opacity: 1;
+	transform: translate3d(0, 0, 0);
+}
 
 
 /** When connecting process procurs */
