@@ -21,21 +21,22 @@
 
 <link rel="stylesheet" type="text/css" href="./index.css">
 
+<div class="lab"></div>
+
 <style>
 * {
 	box-sizing: border-box;
 }
 body {
+	margin: 0;
+	padding: 0;
 	font-family: sans-serif;
 }
 </style>
 
-<div class="app-container"></div>
-
 <script type="text/javascript" src="./bundle.js"></script>
 
 <script type="text/javascript">
-	var lab = require('audio-lab').init({
-
+	var lab = require('audio-lab')(document.querySelector('.lab'), {
 	});
 </script>
