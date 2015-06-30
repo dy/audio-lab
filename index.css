@@ -20,7 +20,6 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	border-radius: 2rem;
 }
 .block-error:after {
 	content: '';
@@ -44,7 +43,6 @@
 	height: 4rem;
 	text-align: center;
 	line-height: 4rem;
-	border-radius: 2rem;
 }
 .block-thumbnail svg {
 	display: inline-block;
@@ -209,7 +207,7 @@ input {
 	position: relative;
 	z-index: 1;
 }
-.dragging .deleter {
+.deletable .deleter {
 	opacity: .1;
 	transform: translate3d(0, 0, 0);
 }
