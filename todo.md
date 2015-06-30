@@ -1,4 +1,4 @@
-* Deleter
+* Automatically connect new block to prev one
 * Rope analysers
 * Hide analyser block
 * Poppy

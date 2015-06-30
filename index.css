@@ -4,7 +4,7 @@
 
 
 [hidden] {
-	display: none!important;
+	visibility: hidden!important;
 }
 
 
@@ -61,9 +61,8 @@
 	height: 2rem;
 	transform-origin: 0 50%;
 	z-index: 0;
-	opacity: 0;
+	visibility: hidden;
 	color: rgb(215, 220, 219);
-	transition: .2s ease-in opacity;
 }
 .block-out:after, .block-in:after {
 	content: '';
@@ -86,8 +85,9 @@
 	border-left: none;
 }
 .block:hover .block-out,
-.block:hover .block-in {
-	opacity: 1;
+.block-out:hover,
+.block.hover .block-out{
+	visibility: visible;
 }
 
 
@@ -133,12 +133,8 @@ input {
 	right: 2.2rem;
 	top: 50%;
 	height: 0;
-	transition: .2s ease-in color;
 	margin-top: -1px;
 	border: 1px solid;
-}
-.connection:hover:after {
-	/*color: black;*/
 }
 .connection-start, .connection-end {
 	position: absolute;
@@ -151,18 +147,24 @@ input {
 	border-top: 1rem solid transparent;
 	border-bottom: 1rem solid transparent;
 	border-right: none;
-	transition: .2s ease-in color;
 	color: transparent;
 }
 .connection-end {
 	left: auto;
 	right: 2rem;
 }
-.connection-connected:hover .connection-end,
-.connection-connected:hover .connection-start {
+.connection-connected:hover .connection-end {
 	color: rgb(216, 216, 216);
 }
-
+.connection-hangling:after {
+	right: 0;
+}
+.connection-hangling .connection-start {
+	color: rgb(216, 216, 216);
+}
+.connection-available .connection-start {
+	color: black;
+}
 
 /** Appender dialog */
 .appender {
@@ -217,14 +219,20 @@ input {
 
 
 /** When connecting process procurs */
-.connecting .block-in {
-	opacity: 1;
+.connecting :not(.block-connection-source) .block-in {
+	visibility: visible;
 }
 .connecting .connection-connected {
 	z-index: -1;
 }
 .block-connection-target .block-in {
 	color: black;
+}
+.block-connection-target .block-out {
+	visibility: visible;
+}
+.block-connection-source .block-out {
+	visibility: hidden!important;
 }
 .connection-available {
 	color: black;
