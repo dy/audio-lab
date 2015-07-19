@@ -1,40 +1,68 @@
+* Plugins infrastructure
+* All default web-audio nodes wrappers
+	* Oscillator
+	* Effects
+	* Script processor
+	* Functional source
+* Audio-lab box node
+* Poppyify dialogs
+
+* Plugins architecture, as postcss does
+* Default web-audio-node wrappers
+* iPhone
 * Automatically connect new block to prev one
 * Rope analysers
 * Hide analyser block
 * Poppy
-* Make app an instance, not the singleton, to reuse it multiple times.
-	* E.g. a block might want to create sub-app to capture it’s output.
-* Replace dialog
+* Make app a block to reuse
+* Replace dialog w/poppy
 * Oscillators interface
-* for source code - add list of substack’s studio codes
+* for source code generator - add list of substack’s studio codes
 * Rotate inputs always so to be closer to mouse; rotate outputs vv.
-* Move & delete connections
 * Drag back end of connection
 * Drag connection = drag both ends
-* Make poppy
-* Make draggy update container size (body might change size)
-* Audio weighting
+* Audio weighting block
 * Make resizable blocks
 * History (ctrl + z)
 * Add node-version, with radio station blocks etc
+* Add buffering to avoid glitches
+* Audio fiddle
+* Show current time
+* Think up a better serialization system, ideally 2-3 symbols per block or alike.
+* Write all favorite tracks synths
+* Write all ideas sound/melodies
+* Store projects as gists/github repos
+* Sound bank functions repos
 
 
 # Compress UI
+
 * Make graphs on connections
 * Make connected connections replaceable instantly
 * Make volume regulators on connections
-*
+* Show simple eqs on connections
+* Show mute on connections
 
 
-## Generators
+## Blocks
 
-* [ ] Source
-	* Ajax
-	* Upload
-	* Microphone
-	* Video
-* [ ] Noise
-* [ ] Oscillator
+### Input
+
+* Sequencer
+* Midi
+
+### Source
+
+* mp3 file - as PDJ player or vynil
+	* Upload/url
+* Sampler box with beatbox interface
+* Radio station with tuner interface
+* Microphone/video interface
+* Noise generator
+	* Kinds of noise
+* Oscillator
+	* Shape of wave
+* WebRTC stream
 
 ## Transformers
 
@@ -42,6 +70,13 @@
 * [ ] Filter (parametric)
 * [ ] Equaliser
 * [ ] Compressor (special graph)
+* Harmonizer
+
+## Effects
+
+* Delay
+* Reverb
+* ... from pioneer
 
 ## Analysers
 
@@ -50,3 +85,11 @@
 * [ ] Spectrogram
 * [ ] Wavelet spectrogram
 * [ ] [Various transforms](https://en.wikipedia.org/wiki/Wigner_distribution_function)
+
+## Other
+
+* Nested audio-lab subproject
+* Worker
+* Server
+* Factorizer
+* Side-chain compressor
