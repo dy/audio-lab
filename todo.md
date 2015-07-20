@@ -1,3 +1,10 @@
+* MVP - cover basic use-cases
+	* Plugin infrastructure
+	* Sharing by url
+		* → github gist API
+	* Script processor block
+	* Piano block
+
 * Plugins infrastructure
 * All default web-audio nodes wrappers
 	* Oscillator
@@ -33,6 +40,16 @@
 * Write all ideas sound/melodies
 * Store projects as gists/github repos
 * Sound bank functions repos
+* Loose couple blocks and lab
+	* As far lab defines specifics of how blocks should behave,
+	* Make lab blocks creation methods
+	* Make lab manage dragging
+	* Make lab manage appending/deleting nodes
+	* Make lab manage active block
+	* Make lab manage creation/deletion
+	* Make lab manage saving/instance tracking
+	* Create blocks over options the same way as over `fromJSON`
+	* Avoid `lab` reference within blocks - ideally, they should be a separate unit with no lab environment.
 
 
 # Compress UI
@@ -42,6 +59,8 @@
 * Make volume regulators on connections
 * Show simple eqs on connections
 * Show mute on connections
+* Infinite number of inputs instead of mixer
+* FXes as feature of connection
 
 
 ## Blocks

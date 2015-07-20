@@ -36,8 +36,11 @@ inherits(Piano, Block);
 var proto = Piano.prototype;
 
 
+Piano.displayName = 'Piano';
+
+
 /** Params of keyboard */
-proto.
+// proto.
 
 
 /** Params of roll */

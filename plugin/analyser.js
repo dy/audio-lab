@@ -42,6 +42,7 @@ function Analyser (options) {
 
 inherits(Analyser, Block);
 
+Analyser.displayName = 'Analyser';
 
 
 var proto = Analyser.prototype;

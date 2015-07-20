@@ -2,7 +2,7 @@
  * Output block - a wrapper for context.destination
  */
 
-var Block = require('./block');
+var Lab = require('../');
 var inherits = require('inherits');
 
 
@@ -10,27 +10,29 @@ var inherits = require('inherits');
 /**
  * @constructor
  */
-function Output () {
-	var self = this;
+class Output extends Lab.Block {
+	constructor (options) {
+		super(options);
 
-	Block.apply(self, arguments);
+		var self = this;
 
-	self.node = self.app.context.destination;
+		self.node = self.context.destination;
 
-	//go ready state
-	self.state = 'ready';
+		//go ready state
+		self.state = 'ready';
 
-	return self;
+		return self;
+	}
 }
 
 
-inherits(Output, Block);
+Output.displayName = 'Output';
 
 
 var proto = Output.prototype;
 
 proto.numberOfOutputs = 0;
-proto.numberOfInputs = 5;
+proto.numberOfInputs = Infinity;
 
 
 /** Output is indeletable */

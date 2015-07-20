@@ -38,6 +38,9 @@ function Microphone (options) {
 inherits(Microphone, Block);
 
 
+Microphone.displayName = 'Microphone';
+
+
 var proto = Microphone.prototype;
 
 

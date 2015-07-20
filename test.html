@@ -37,6 +37,12 @@ body {
 <script type="text/javascript" src="./bundle.js"></script>
 
 <script type="text/javascript">
-	var lab = require('audio-lab')(document.querySelector('.lab'), {
+	var Lab = require('audio-lab');
+
+	//Attach extra plugins
+	// Lab.use(Piano);
+
+	var lab = new Lab({
+		element: document.querySelector('.lab')
 	});
 </script>

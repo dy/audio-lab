@@ -1,17 +1,15 @@
-var lab = require('./lib/application');
+var Lab = require('./lib/lab');
 
-//register default set of blocks
+//export classes
+Lab.Block = require('./lib/block');
+Lab.Connection = require('./lib/connection');
 
-lab.use([
-	require('./lib/radio'),
-	require('./lib/oscillator'),
-	require('./lib/output'),
-	require('./lib/generator'),
-	require('./lib/analyser'),
-	require('./lib/microphone'),
-	require('./lib/gain'),
-	require('./lib/piano')
+
+module.exports = Lab;
+
+
+//register default blocks
+Lab.use([
+	require('./plugin/output'),
+	require('./plugin/generator')
 ]);
-
-
-module.exports = lab;

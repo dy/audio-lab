@@ -36,7 +36,6 @@
 }
 .block-thumbnail {
 	z-index: 1;
-	/*box-shadow: 0 0 0 1px lightgray;*/
 	position: relative;
 	cursor: default;
 	width: 4rem;
@@ -54,13 +53,14 @@
 	position: absolute;
 	top: 1rem;
 	left: 2rem;
-	/*box-shadow: 0 0 0 1px lightgray;*/
 	width: 4rem;
 	height: 2rem;
 	transform-origin: 0 50%;
 	z-index: 0;
-	visibility: hidden;
 	color: rgb(215, 220, 219);
+}
+.block-in {
+	visibility: hidden;
 }
 .block-out:after, .block-in:after {
 	content: '';
@@ -81,11 +81,6 @@
 	border-top: 1rem solid transparent;
 	border-bottom: 1rem solid transparent;
 	border-left: none;
-}
-.block:hover .block-out,
-.block-out:hover,
-.block.hover .block-out{
-	visibility: visible;
 }
 
 
@@ -120,7 +115,6 @@ input {
 	position: absolute;
 	min-width: 4rem;
 	min-height: 2rem;
-	/*box-shadow: 0 0 0 1px lightgray;*/
 	transform-origin: 0 50%;
 	color: rgb(216, 216, 216);
 }
@@ -150,9 +144,9 @@ input {
 .connection-end {
 	left: auto;
 	right: 2rem;
+	color: rgb(216, 216, 216);
 }
 .connection-connected:hover .connection-end {
-	color: rgb(216, 216, 216);
 }
 .connection-hangling:after {
 	right: 0;
@@ -217,20 +211,20 @@ input {
 
 
 /** When connecting process procurs */
-.connecting :not(.block-connection-source) .block-in {
+.connecting .block-out {
+	visibility: hidden;
+}
+.connecting .block-in {
 	visibility: visible;
+}
+.connecting .connection-end {
+	visibility: hidden;
 }
 .connecting .connection-connected {
 	z-index: -1;
 }
 .block-connection-target .block-in {
 	color: black;
-}
-.block-connection-target .block-out {
-	visibility: visible;
-}
-.block-connection-source .block-out {
-	visibility: hidden!important;
 }
 .connection-available {
 	color: black;

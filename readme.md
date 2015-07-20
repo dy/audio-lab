@@ -1,8 +1,4 @@
-[Audio-lab](http://dfcreative.github.io/audio-lab) is loosely based on web-audio API, in a sense that it uses it deep beneath. That allows to abstract from the specific sound technology: whether it is AudioWorker, ServerHandler, Ajax source, AudioNode, ScriptNode, node-webaudio etc.
-
-Every sound node has a wrapper, or controller, called _Block_. Each block has a DOM-representation (optionally offable), audio node and simple API. As far any object in lab is Block, context destination is also a block.
-
-Each block can be connected to any other block via _Connection_.
+[Audio-lab](http://dfcreative.github.io/audio-lab) is a sound design & music ideas sharing application.
 
 
 ## Use cases
@@ -10,11 +6,69 @@ Each block can be connected to any other block via _Connection_.
 * Save a melodic motive, in abstract form (dependless of specific sound). To share it later or to use in a track.
 * Export/import midi-files
 * Save/load projects, ideally as a github repo. Because each project may consist of multiple lab files, like grooves, synth preset etc.
-* Import/export web-audio setup
+* Import/export web-audio code setup
+* Share musical pieces easily
+
 
 ## Principles
 
-* Keep blocks atomic, in that separate midi/piano blocks are better than single compound one. Ideally, scheme of generated sound should be clear from the [satellite view].
+* Keep blocks atomic, in that separate midi/piano blocks are better than single compound one. Ideally, scheme of generated sound should be clear from the bird’s eye view.
 * No modes of blocks (consequence of previous principle).
-* No time concept. Everything sounds just as project loads. There is no trigger in real synthesis.
-* Factually any block can be based off a script processor block, putting calculations to any stream/async mode
+* No time concept. Everything sounds just as project loads. There is no trigger in reality.
+* Any block can be based off a script processor block, putting calculations to any stream/async mode.
+* Any block can be "rendered" to audio-buffer block to enhance performance.
+* Fx-es, gain and stats should be available on blocks and on connections.
+* Touch-oriented interface.
+
+
+## Docs
+
+### Init lab
+
+```js
+var Lab = require('audio-lab');
+
+var lab = new Lab({
+	element: document.querySelector('.lab-container'),
+	context: audioContext,
+	channels: 2,
+	autosave: false
+});
+```
+
+### Create block plugin
+
+```js
+var Lab = require('audio-lab');
+
+class Piano extends Lab.Block {
+	constructor () {
+		super();
+	}
+}
+
+//name to use as a node name
+Piano.displayName = 'piano-keyboard';
+
+Piano.prototype.numberOfInputs = 0;
+Piano.prototype.numberOfOutputs = 1;
+```
+
+### Use plugin
+
+```js
+var Lab = require('audio-lab');
+var Piano = require('audio-lab-piano');
+
+Lab.use(Piano);
+
+var lab = new Lab({
+
+});
+```
+
+
+### Block API
+
+```js
+```

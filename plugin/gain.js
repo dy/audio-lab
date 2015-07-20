@@ -42,6 +42,8 @@ inherits(Gain, Block);
 var proto = Gain.prototype;
 
 
+Gain.displayName = 'Gain';
+
 
 /**
  * Gain layout

@@ -29,6 +29,8 @@ function Oscillator () {
 
 inherits(Oscillator, Block);
 
+Oscillator.displayName = 'Oscillator';
+
 var proto = Oscillator.prototype;
 
 

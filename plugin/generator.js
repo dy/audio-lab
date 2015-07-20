@@ -3,8 +3,7 @@
  * Takes a function to generate buffer.
  */
 
-var Block = require('./block');
-var app = require('./application');
+var Lab = require('../');
 var isFn = require('is-function');
 var on = require('emmy/on');
 var off = require('emmy/off');
@@ -22,33 +21,84 @@ var fnbody = require('fnbody');
  *
  * @constructor
  */
-function Generator () {
-	var self = this;
+class Generator extends Lab.Block {
+	constructor (options) {
+		super(options);
 
-	Block.apply(self, arguments);
+		var self = this;
 
-	//show code in textarea
-	self.textarea = q('[data-generator-code]', self.content);
-	self.textarea.value = self.toJSON().generate;
-	autosize(self.textarea);
+		//show code in textarea
+		self.textarea = q('[data-generator-code]', self.content);
+		self.textarea.value = self.toJSON().generate;
+		autosize(self.textarea);
 
-	on(self.textarea, 'change', function () {
-		var src = self.textarea.value;
-		self.setGenerator(src);
-	});
+		on(self.textarea, 'change', function () {
+			var src = self.textarea.value;
+			self.setGenerator(src);
+		});
 
-	//attach generator
-	self.setGenerator(self.generate);
+		//attach generator
+		self.setGenerator(self.generate);
 
-	//go ready state
-	self.state = 'ready';
+		//go ready state
+		self.state = 'ready';
 
-	return self;
+		return self;
+	}
+
+
+	/**
+	 * Destroy additional things
+	 */
+	destroy () {
+		var self = this;
+
+		autosize.destroy(self.textarea);
+		self.autosize = null;
+
+		off(self.textarea);
+		self.textarea = null;
+
+		super.destroy();
+	}
+
+
+	/**
+	 * Represent instance as JSON
+	 */
+	toJSON () {
+		var self = this;
+
+		var data = super.toJSON();
+
+		//save generator function
+		var fnStr = fnbody(self.generate);
+
+		data.generate = fnStr;
+
+		return data;
+	}
+
+
+	/**
+	 * Load from JSON
+	 */
+	fromJSON (data) {
+		var self = this;
+
+		super.fromJSON(data);
+
+		if (data.generate) {
+			self.setGenerator(data.generate);
+		}
+
+		return self;
+	}
+
 }
 
-inherits(Generator, Block);
 
-
+Generator.displayName = 'Generator';
 
 var proto = Generator.prototype;
 
@@ -108,63 +158,12 @@ proto.setGenerator = function (fn) {
 	self.textarea.value = self.toJSON().generate;
 
 	//create generator node
-	self.node = baudio(self.app.context, self.generate);
+	self.node = baudio(self.context, self.generate);
 
 	isActive && self.start();
 
 	return self;
 };
-
-
-/**
- * Destroy additional things
- */
-proto.destroy = function () {
-	var self = this;
-
-	autosize.destroy(self.textarea);
-	self.autosize = null;
-
-	off(self.textarea);
-	self.textarea = null;
-
-	return Block.prototype.destroy.apply(self);
-};
-
-
-
-/**
- * Represent instance as JSON
- */
-proto.toJSON = function () {
-	var self = this;
-
-	var data = Block.prototype.toJSON.apply(self);
-
-	//save generator function
-	var fnStr = fnbody(self.generate);
-
-	data.generate = fnStr;
-
-	return data;
-};
-
-
-/**
- * Load from JSON
- */
-proto.fromJSON = function (data) {
-	var self = this;
-
-	Block.prototype.fromJSON.call(self, data);
-
-	if (data.generate) {
-		self.setGenerator(data.generate);
-	}
-
-	return self;
-};
-
 
 
 module.exports = Generator;

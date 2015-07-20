@@ -41,6 +41,8 @@ function Radio (url) {
 
 inherits(Radio, Block);
 
+Radio.displayName = 'Radio';
+
 
 
 var proto = Radio.prototype;
