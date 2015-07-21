@@ -7,9 +7,12 @@
 		* Generator, basically, is script processor block: it gets time and sample
 		* Perfectize code editing
 		* Separate functions blocks - share functional scope/fn banks
-		*
-	* Piano block
-	* Convenient popups
+	* Piano block - write notes
+	* Convenient popups - critical UX
+		* Resize
+		* Drag
+		* Stick
+	* MIDI-in - record songs
 
 * Plugins infrastructure
 * All default web-audio nodes wrappers
@@ -46,6 +49,7 @@
 * Write all ideas sound/melodies
 * Store projects as gists/github repos
 * Sound bank functions repos
+* Name functional blocks
 
 
 # Compress UI
