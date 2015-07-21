@@ -1,9 +1,15 @@
+* Make iPhone start button main start button, ie implement start/stop API
+
 * MVP - cover basic use-cases
-	* Plugin infrastructure
 	* Sharing by url
 		* → github gist API
 	* Script processor block
+		* Generator, basically, is script processor block: it gets time and sample
+		* Perfectize code editing
+		* Separate functions blocks - share functional scope/fn banks
+		*
 	* Piano block
+	* Convenient popups
 
 * Plugins infrastructure
 * All default web-audio nodes wrappers
@@ -40,16 +46,6 @@
 * Write all ideas sound/melodies
 * Store projects as gists/github repos
 * Sound bank functions repos
-* Loose couple blocks and lab
-	* As far lab defines specifics of how blocks should behave,
-	* Make lab blocks creation methods
-	* Make lab manage dragging
-	* Make lab manage appending/deleting nodes
-	* Make lab manage active block
-	* Make lab manage creation/deletion
-	* Make lab manage saving/instance tracking
-	* Create blocks over options the same way as over `fromJSON`
-	* Avoid `lab` reference within blocks - ideally, they should be a separate unit with no lab environment.
 
 
 # Compress UI

@@ -78,30 +78,13 @@ class Generator extends Lab.Block {
 
 		return data;
 	}
-
-
-	/**
-	 * Load from JSON
-	 */
-	fromJSON (data) {
-		var self = this;
-
-		super.fromJSON(data);
-
-		if (data.generate) {
-			self.setGenerator(data.generate);
-		}
-
-		return self;
-	}
-
 }
 
 
-Generator.displayName = 'Generator';
-
 var proto = Generator.prototype;
 
+
+proto.className = 'Generator';
 
 proto.numberOfInputs = 0;
 

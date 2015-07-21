@@ -26,10 +26,11 @@ class Output extends Lab.Block {
 }
 
 
-Output.displayName = 'Output';
-
-
 var proto = Output.prototype;
+
+
+proto.className = 'Output';
+
 
 proto.numberOfOutputs = 0;
 proto.numberOfInputs = Infinity;

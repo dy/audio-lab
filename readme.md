@@ -19,6 +19,7 @@
 * Any block can be "rendered" to audio-buffer block to enhance performance.
 * Fx-es, gain and stats should be available on blocks and on connections.
 * Touch-oriented interface.
+* Lab manages blocks, blocks manages connections. Though connections and blocks are self-sufficient units. Blocks and connections know nothing about lab (as people about god).
 
 
 ## Docs
@@ -42,13 +43,17 @@ var lab = new Lab({
 var Lab = require('audio-lab');
 
 class Piano extends Lab.Block {
-	constructor () {
-		super();
+	constructor (options) {
+		super(options);
+
+		//init here
+
+		this.state = 'ready';
 	}
 }
 
 //name to use as a node name
-Piano.displayName = 'piano-keyboard';
+Piano.displayName = 'Piano';
 
 Piano.prototype.numberOfInputs = 0;
 Piano.prototype.numberOfOutputs = 1;
@@ -60,15 +65,6 @@ Piano.prototype.numberOfOutputs = 1;
 var Lab = require('audio-lab');
 var Piano = require('audio-lab-piano');
 
-Lab.use(Piano);
-
-var lab = new Lab({
-
-});
-```
-
-
-### Block API
-
-```js
+var lab = new Lab();
+lab.use(Piano);
 ```

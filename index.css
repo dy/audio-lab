@@ -6,16 +6,99 @@
 [hidden] {
 	visibility: hidden!important;
 }
+input {
+	display: block;
+}
 
 
-.audio-lab {
+/** Lab container */
+.lab {
 	position: relative;
 	padding-top: 2rem;
 	min-height: 30rem;
 }
 
 
-/** Blocks basics */
+
+/** Appender button & dialog */
+.lab-appender {
+	cursor: pointer;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	height: 4rem;
+	line-height: 4rem;
+	width: 4rem;
+	margin-left: -2rem;
+	border-radius: 2rem;
+	color: rgba(0,0,0,.15);
+	text-align: center;
+	font-size: 4.6rem;
+}
+.lab-appender:hover{
+	color: black;
+}
+.lab-deletable .lab-appender {
+	display: none;
+}
+.lab-appender-items {
+	max-width: 50vw;
+	display: flex;
+	flex-flow: row wrap;
+
+}
+.lab-appender-item {
+	position: relative;
+	flex: 1 0 4rem;
+	margin: .5rem;
+	cursor: pointer;
+	width: 4rem;
+	height: 4rem;
+	text-align: center;
+	line-height: 4rem;
+}
+.lab-appender-item svg {
+	display: inline-block;
+	vertical-align: middle;
+	max-width: 60%;
+	max-height: 60%;
+}
+
+
+
+/** Deleter area */
+.lab-deleter {
+	cursor: pointer;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	height: 4rem;
+	line-height: 4rem;
+	width: 4rem;
+	margin-left: -2rem;
+	border-radius: 2rem;
+	color: white;
+	text-align: center;
+	font-size: 3.2rem;
+	font-weight: bolder;
+	display: none;
+	opacity: .1;
+}
+.lab-deleter svg {
+	width: 4rem;
+	position: relative;
+	z-index: 1;
+}
+.lab-deletable .lab-deleter {
+	display: block;
+}
+.lab-deleter.droppable-active {
+	opacity: 1;
+}
+
+
+
+/** Blocks */
 .block {
 	position: absolute;
 	top: 0;
@@ -35,7 +118,7 @@
 .block:hover .block-thumbnail {
 }
 .block-thumbnail {
-	z-index: 1;
+	z-index: 2;
 	position: relative;
 	cursor: default;
 	width: 4rem;
@@ -56,10 +139,8 @@
 	width: 4rem;
 	height: 2rem;
 	transform-origin: 0 50%;
-	z-index: 0;
+	z-index: 1;
 	color: rgb(215, 220, 219);
-}
-.block-in {
 	visibility: hidden;
 }
 .block-out:after, .block-in:after {
@@ -82,31 +163,16 @@
 	border-bottom: 1rem solid transparent;
 	border-left: none;
 }
-
-
-/** Specific blocks */
-.block-code {
-	display: block;
-	tab-size: 4;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+.block-potential-target .block-in {
+	visibility: visible;
 }
-.block-input {
-	width: 100%;
+.block-potential-source .block-out {
+	visibility: visible;
 }
-.block-analyser .audio-stats {
-	position: absolute;
-	top: 1rem;
-	left: 1.5rem;
-	bottom: 1rem;
-	right: 2.5rem;
+.block-target .block-in {
+	color: black;
 }
 
-
-input {
-	display: block;
-}
 
 
 /** Connections */
@@ -154,78 +220,33 @@ input {
 .connection-hangling .connection-start {
 	color: rgb(216, 216, 216);
 }
+.connection-available {
+	color: black;
+}
 .connection-available .connection-start {
 	color: black;
 }
-
-/** Appender dialog */
-.appender {
-	max-width: 50vw;
-	display: flex;
-	flex-flow: row wrap;
-
-}
-.appender-item {
-	position: relative;
-	flex: 1 0 4rem;
-	margin: .5rem;
-	cursor: pointer;
-	width: 4rem;
-	height: 4rem;
-	text-align: center;
-	line-height: 4rem;
-}
-.appender-item svg {
-	display: inline-block;
-	vertical-align: middle;
-	max-width: 60%;
-	max-height: 60%;
+.connection-hangling .connection-end {
+	visibility: hidden;
 }
 
 
-/** Deleter during drag */
-.deleter {
+
+/** Specific blocks */
+.block-code {
+	display: block;
+	tab-size: 4;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+.block-input {
+	width: 100%;
+}
+.block-analyser .audio-stats {
 	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 100px;
-	line-height: 100px;
-	text-align: center;
-	opacity: 0;
-	padding-top: 1rem;
-	transform: translate3d(0px, 100px, 0);
-	transition: .15s ease-in opacity, .15s ease-out transform;
-}
-.deleter svg {
-	position: relative;
-	z-index: 1;
-}
-.deletable .deleter {
-	opacity: .1;
-	transform: translate3d(0, 0, 0);
-}
-.deleter.droppable-active {
-	opacity: 1;
-}
-
-
-/** When connecting process procurs */
-.connecting .block-out {
-	visibility: hidden;
-}
-.connecting .block-in {
-	visibility: visible;
-}
-.connecting .connection-end {
-	visibility: hidden;
-}
-.connecting .connection-connected {
-	z-index: -1;
-}
-.block-connection-target .block-in {
-	color: black;
-}
-.connection-available {
-	color: black;
+	top: 1rem;
+	left: 1.5rem;
+	bottom: 1rem;
+	right: 2.5rem;
 }
