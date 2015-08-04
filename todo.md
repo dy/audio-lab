@@ -4,13 +4,13 @@
 	* Sharing by url
 		* → github gist API
 	* Script processor block
-		* Generator, basically, is script processor block: it gets time and sample
-		* Perfectize code editing
+		* + Generator, basically, is script processor block: it gets time and sample
+		* + Perfectize code editing
 		* Separate functions blocks - share functional scope/fn banks
 	* Piano block - write notes
 	* Convenient popups - critical UX
-		* Resize
-		* Drag
+		* + Resize
+		* + Drag
 		* Stick
 	* MIDI-in - record songs
 

@@ -3,8 +3,6 @@
  */
 
 var Lab = require('../');
-var inherits = require('inherits');
-
 
 
 /**
