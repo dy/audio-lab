@@ -32,7 +32,6 @@ class Generator extends Lab.Block {
 		//show code in textarea
 		self.textarea = q('[data-generator-code]', self.content);
 		self.textarea.value = self.toJSON().generate;
-		// autosize(self.textarea);
 
 		self.codemirror = CodeMirror.fromTextArea(self.textarea, {
 			node: {name: "javascript", json: true},
@@ -82,7 +81,6 @@ class Generator extends Lab.Block {
 
 		//save generator function
 		var fnStr = fnbody(self.generate);
-		console.log(self.generate.toString())
 
 		data.generate = fnStr;
 
@@ -156,6 +154,8 @@ proto.setGenerator = function (fn, setValue) {
 	self.node = baudio(self.context, self.generate);
 
 	isActive && self.start();
+
+	self.emit('change');
 
 	return self;
 };

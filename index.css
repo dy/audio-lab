@@ -84,6 +84,7 @@ input {
 	position: absolute;
 	top: 0;
 	left: 0;
+	max-width: 4rem;
 }
 .block-error:after {
 	content: '';
@@ -113,6 +114,19 @@ input {
 	max-width: 60%;
 	max-height: 60%;
 }
+.block-title {
+	box-shadow: none;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	border: 0;
+	display: block;
+	min-width: 4rem;
+	max-width: 100%;
+	resize: none;
+	max-height: 4rem;
+}
+
 .block-out, .block-in {
 	position: absolute;
 	top: 1rem;
