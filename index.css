@@ -46,7 +46,6 @@ input {
 }
 
 
-
 /** Deleter area */
 .lab-deleter {
 	cursor: pointer;
@@ -169,7 +168,6 @@ input {
 }
 
 
-
 /** Connections */
 .connection {
 	z-index: 0;
@@ -244,4 +242,8 @@ input {
 	left: 1.5rem;
 	bottom: 1rem;
 	right: 2.5rem;
+}
+
+.poppy-close {
+	z-index: 999;
 }

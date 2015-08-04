@@ -36,6 +36,10 @@ proto.numberOfOutputs = 0;
 proto.numberOfInputs = Infinity;
 
 
+/** Default title */
+proto.title = 'Speaker';
+
+
 /**
  * Thumb
  */

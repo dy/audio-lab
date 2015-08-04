@@ -27,6 +27,7 @@
     "audio-context": "^0.1.0",
     "audio-stats": "^1.1.5",
     "autosize": "^3.0.6",
+    "caret-position2": "^1.0.2",
     "codemirror": "^5.5.0",
     "define-state": "^1.1.0",
     "dialog-component": "^0.4.4",

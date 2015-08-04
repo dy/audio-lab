@@ -1,6 +1,6 @@
 /**
- * Generator block processor.
- * Takes a function to generate buffer.
+ * Processor block processor.
+ * Takes a function to process buffer.
  */
 
 var Lab = require('../');
@@ -19,19 +19,19 @@ var cmMode = require('codemirror/mode/javascript/javascript')
 
 
 /**
- * Create generator based of function
+ * Create processor based of function
  *
  * @constructor
  */
-class Generator extends Lab.Block {
+class Processor extends Lab.Block {
 	constructor (options) {
 		super(options);
 
 		var self = this;
 
 		//show code in textarea
-		self.textarea = q('[data-generator-code]', self.content);
-		self.textarea.value = self.toJSON().generate;
+		self.textarea = q('[data-processor-code]', self.content);
+		self.textarea.value = self.toJSON().process;
 
 		self.codemirror = CodeMirror.fromTextArea(self.textarea, {
 			node: {name: "javascript", json: true},
@@ -40,12 +40,12 @@ class Generator extends Lab.Block {
 
 		self.draggable.update();
 
-		//attach generator
-		self.setGenerator(self.generate, true);
+		//attach processor
+		self.setFunction(self.process, true);
 
 		on(self.codemirror, 'change', function (i, ch) {
 			var src = self.codemirror.getValue();
-			self.setGenerator(src);
+			self.setFunction(src);
 		});
 
 		//go ready state
@@ -79,59 +79,57 @@ class Generator extends Lab.Block {
 
 		var data = super.toJSON();
 
-		//save generator function
-		var fnStr = fnbody(self.generate);
+		//save processor function
+		var fnStr = fnbody(self.process);
 
-		data.generate = fnStr;
+		data.process = fnStr;
 
 		return data;
 	}
 }
 
 
-var proto = Generator.prototype;
+var proto = Processor.prototype;
 
 
-proto.className = 'Generator';
-
-proto.numberOfInputs = 0;
+proto.className = 'Processor';
 
 
 /**
- * Generator layout
+ * Processor layout
  */
 proto.contentTpl = `
 function (t, i, sample) {
-<textarea class="block-code" rows="10" data-generator-code></textarea>
+<textarea class="block-code" rows="10" data-processor-code></textarea>
 }
 `;
 
 proto.thumbnailTpl = `
 <style>
-.block-generator-thumbnail {
+.block-processor-thumbnail {
 	font-family: serif;
 	font-style: italic;
 	font-size: 2.4rem;
 	font-weight: bolder;
 }
 </style>
-<span class="block-generator-thumbnail">f</span>
+<span class="block-processor-thumbnail">f</span>
 `;
 
 
 /**
  * Generate -1..1 noise by default
  */
-proto.generate = function (t, i, sample) {
+proto.process = function (t, i, sample) {
 	var f = (88%t);
 	return Math.cos(2*Math.PI*f*t);
 };
 
 
 /**
- * Resetup generator from string or function
+ * Resetup processor from string or function
  */
-proto.setGenerator = function (fn, setValue) {
+proto.setFunction = function (fn, setValue) {
 	var self = this;
 
 	if (isString(fn)) {
@@ -144,16 +142,17 @@ proto.setGenerator = function (fn, setValue) {
 
 	isActive && self.stop();
 
-	self.generate = fn;
+	self.process = fn;
 
-	var value = self.toJSON().generate;
+	var value = self.toJSON().process;
 
 	setValue && self.codemirror.setValue(value);
 
-	//create generator node
-	self.node = baudio(self.context, self.generate);
+	//create processor node
+	self.node = baudio(self.context, self.process);
 
-	isActive && self.start();
+	self.node.x = 1;
+	self.start();
 
 	self.emit('change');
 
@@ -161,4 +160,8 @@ proto.setGenerator = function (fn, setValue) {
 };
 
 
-module.exports = Generator;
+/** Default name */
+proto.title = 'Processor';
+
+
+module.exports = Processor;
