@@ -14,6 +14,7 @@ var inherits = require('inherits');
 var isString = require('mutype/is-string');
 var fnbody = require('fnbody');
 var CodeMirror = require('codemirror');
+var cmMode = require('codemirror/mode/javascript/javascript')
 
 
 
@@ -34,7 +35,7 @@ class Generator extends Lab.Block {
 		// autosize(self.textarea);
 
 		self.codemirror = CodeMirror.fromTextArea(self.textarea, {
-			mode: 'javascript',
+			node: {name: "javascript", json: true},
 			value: self.textarea.value
 		});
 
@@ -81,6 +82,7 @@ class Generator extends Lab.Block {
 
 		//save generator function
 		var fnStr = fnbody(self.generate);
+		console.log(self.generate.toString())
 
 		data.generate = fnStr;
 
@@ -123,8 +125,8 @@ proto.thumbnailTpl = `
  * Generate -1..1 noise by default
  */
 proto.generate = function (t, i, sample) {
-var f = (88%t);
-return Math.cos(2*Math.PI*f*t);
+	var f = (88%t);
+	return Math.cos(2*Math.PI*f*t);
 };
 
 
