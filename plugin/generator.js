@@ -13,6 +13,7 @@ var baudio = require('webaudio');
 var inherits = require('inherits');
 var isString = require('mutype/is-string');
 var fnbody = require('fnbody');
+var CodeMirror = require('codemirror');
 
 
 
@@ -30,15 +31,22 @@ class Generator extends Lab.Block {
 		//show code in textarea
 		self.textarea = q('[data-generator-code]', self.content);
 		self.textarea.value = self.toJSON().generate;
-		autosize(self.textarea);
+		// autosize(self.textarea);
 
-		on(self.textarea, 'change', function () {
-			var src = self.textarea.value;
-			self.setGenerator(src);
+		self.codemirror = CodeMirror.fromTextArea(self.textarea, {
+			mode: 'javascript',
+			value: self.textarea.value
 		});
 
+		self.draggable.update();
+
 		//attach generator
-		self.setGenerator(self.generate);
+		self.setGenerator(self.generate, true);
+
+		on(self.codemirror, 'change', function (i, ch) {
+			var src = self.codemirror.getValue();
+			self.setGenerator(src);
+		});
 
 		//go ready state
 		self.state = 'ready';
@@ -115,20 +123,20 @@ proto.thumbnailTpl = `
  * Generate -1..1 noise by default
  */
 proto.generate = function (t, i, sample) {
-	var f = (88%t);
-	return Math.cos(2*Math.PI*f*t);
+var f = (88%t);
+return Math.cos(2*Math.PI*f*t);
 };
 
 
 /**
  * Resetup generator from string or function
  */
-proto.setGenerator = function (fn) {
+proto.setGenerator = function (fn, setValue) {
 	var self = this;
 
 	if (isString(fn)) {
 		//allow strange syntax
-		fn = fn.replace(/\n/, ' ');
+		// fn = fn.replace(/^\n\s*/g, '\n');
 		fn = new Function ('t', 'i', 'sample', fn);
 	}
 
@@ -138,7 +146,9 @@ proto.setGenerator = function (fn) {
 
 	self.generate = fn;
 
-	self.textarea.value = self.toJSON().generate;
+	var value = self.toJSON().generate;
+
+	setValue && self.codemirror.setValue(value);
 
 	//create generator node
 	self.node = baudio(self.context, self.generate);

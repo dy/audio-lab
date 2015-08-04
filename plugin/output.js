@@ -36,10 +36,6 @@ proto.numberOfOutputs = 0;
 proto.numberOfInputs = Infinity;
 
 
-/** Output is indeletable */
-proto.deletable = false;
-proto.appendable = false;
-
 /**
  * Thumb
  */

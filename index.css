@@ -1,6 +1,8 @@
 @import './node_modules/audio-stats/index.css';
 @import './node_modules/dialog-component/dialog.css';
 @import './node_modules/overlay-component/overlay.css';
+@import './node_modules/popoff/index.css';
+@import './node_modules/codemirror/lib/codemirror.css';
 
 
 [hidden] {
@@ -22,30 +24,9 @@ input {
 
 /** Appender button & dialog */
 .lab-appender {
-	cursor: pointer;
-	position: absolute;
-	bottom: 0;
-	left: 50%;
-	height: 4rem;
-	line-height: 4rem;
-	width: 4rem;
-	margin-left: -2rem;
-	border-radius: 2rem;
-	color: rgba(0,0,0,.15);
-	text-align: center;
-	font-size: 4.6rem;
-}
-.lab-appender:hover{
-	color: black;
-}
-.lab-deletable .lab-appender {
-	display: none;
-}
-.lab-appender-items {
 	max-width: 50vw;
 	display: flex;
 	flex-flow: row wrap;
-
 }
 .lab-appender-item {
 	position: relative;
