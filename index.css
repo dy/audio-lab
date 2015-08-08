@@ -77,7 +77,6 @@ input {
 }
 
 
-
 /** Blocks */
 .block {
 	position: absolute;
@@ -165,6 +164,10 @@ input {
 }
 .block-target .block-in {
 	color: black;
+}
+
+.block-connecting .block-in {
+	visibility: hidden;
 }
 
 
