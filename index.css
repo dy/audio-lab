@@ -250,3 +250,7 @@ input {
 .poppy-close {
 	z-index: 999;
 }
+
+.CodeMirror {
+	height: auto;
+}

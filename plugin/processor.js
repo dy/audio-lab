@@ -35,7 +35,8 @@ class Processor extends Lab.Block {
 
 		self.codemirror = CodeMirror.fromTextArea(self.textarea, {
 			node: {name: "javascript", json: true},
-			value: self.textarea.value
+			value: self.textarea.value,
+			viewportMargin: Infinity
 		});
 
 		self.draggable.update();
@@ -134,7 +135,7 @@ proto.setFunction = function (fn, setValue) {
 
 	if (isString(fn)) {
 		//allow strange syntax
-		// fn = fn.replace(/^\n\s*/g, '\n');
+		fn = fn.replace(/\n\s*/g, '\n');
 		fn = new Function ('t', 'i', 'sample', fn);
 	}
 
