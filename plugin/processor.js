@@ -162,7 +162,7 @@ proto.setFunction = function (fn, setValue) {
 
 
 /** Default name */
-proto.title = 'Processor';
+proto.label = 'Processor';
 
 
 module.exports = Processor;

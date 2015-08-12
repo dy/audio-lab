@@ -1,8 +1,14 @@
+* Tempo
+* Mixer
+* Frequency representation
+
+
 * Make iPhone start button main start button, ie implement start/stop API
 
 * MVP - cover basic use-cases
-	* Sharing by url
-		* → github gist API
+	* Saving project
+		* Short URL - github gist API
+		* Import midi/vextab files
 	* Script processor block
 		* + Generator, basically, is script processor block: it gets time and sample
 		* + Perfectize code editing
@@ -13,6 +19,15 @@
 		* + Drag
 		* Stick
 	* MIDI-in - record songs
+		* Piano roll display/player
+		* Vextab notes renderer
+
+* Shoulds
+	* Make connections drop-in, so that if a new block is placed over a connection, than the connection gets sectioned in between and a new block takes it’s place.
+	* The same way the deletion of blocks should work - instead of removing block along with connections, it is better to keep connection, especially in case of 1in 1out.
+	* Processor block should get only input value.
+	* Time generation should be moved out, in that input param forms a time value as well.
+	* Processor blocks have to have multiple inputs.
 
 * Plugins infrastructure
 * All default web-audio nodes wrappers
