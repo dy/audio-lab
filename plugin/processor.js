@@ -119,9 +119,10 @@ proto.thumbnailTpl = `
 
 
 /**
- * Generate -1..1 noise by default
+ * Default generator function
  */
-proto.process = function (t, i, sample) {
+proto.process = function (e) {
+	var time = e.time;
 	var f = (88%t);
 	return Math.cos(2*Math.PI*f*t);
 };

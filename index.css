@@ -16,8 +16,8 @@ input {
 /** Lab container */
 .lab {
 	position: relative;
-	padding-top: 2rem;
-	min-height: 30rem;
+	/*padding-top: 2rem;*/
+	/*min-height: 30rem;*/
 }
 
 
@@ -254,4 +254,10 @@ input {
 
 .CodeMirror {
 	height: auto;
+}
+
+canvas {
+	outline: 1px solid lightgray;
+	display: inline-block;
+	margin-right: 5px;
 }

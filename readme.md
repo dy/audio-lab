@@ -12,6 +12,9 @@
 
 ## Principles
 
+* Each block is a stream.
+* As far blocks might be rendered in background, server-side etc, they might have no representation. Block === model, it has view+controller (js). It may not have them.
+
 * Keep blocks atomic, in that separate midi/piano blocks are better than single compound one. Ideally, scheme of generated sound should be clear from the bird’s eye view.
 * No modes of blocks (consequence of previous principle).
 * No time concept. Everything sounds just as project loads. There is no trigger in reality. Time/trigger are a separate blocks.
@@ -76,3 +79,4 @@ lab.use(Piano);
 ## Similar attempts
 
 * [dataglow-webaudio](https://github.com/forresto/dataflow-webaudio)
+* [webaudio-playground](https://github.com/cwilso/WebAudio)
