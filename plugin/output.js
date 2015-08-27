@@ -58,11 +58,6 @@ class Output extends Writable {
 
 		//if buffer is full - wait smallest possible time (next processor tick)
 		if (!self.isAvailableRoomFor(chunk)) {
-			if (renderCount < 100) {
-				var el = document.createElement('span');
-				el.innerHTML = 'x'
-				document.body.appendChild(el)
-			}
 			setTimeout(function () {
 				self._write(chunk, encoding, callback);
 			});
@@ -104,36 +99,59 @@ class Output extends Writable {
 		var chunkLength = Math.floor(chunk.length / 4);
 		var chunkDuration = chunkLength / self.context.sampleRate;
 
-		//get offset of a current playing time
-		//NOTE: potentially rough
-		var currentTimeOffset = Math.floor(((self.context.currentTime - self.initialTime) * self.context.sampleRate) % buffer.length);
 
 		//get time of a current offset within the buffer
 		var currentOffsetTime = self.count / self.context.sampleRate;
 
-		draw(buffer, self.offset, self.offset + chunkLength, currentTimeOffset);
+
+		// debug
+		// var offset = self.offset;
+		// var currentTime = self.context.currentTime - self.initialTime;
+		// var currentTimeOffset = Math.floor((currentTime * self.context.sampleRate) % buffer.length);
+
+		// draw(buffer, function (canvas) {
+		// 	var ctx = canvas.getContext('2d');
+		// 	var width = canvas.width;
+		// 	var height = canvas.height;
+
+		// 	var step = (width / buffer.length);
+
+		// 	//draw buffering chunk
+		// 	ctx.fillStyle = 'rgba(255,0,0,.5)';
+		// 	ctx.fillRect(offset * step, 0, chunkLength * step, height);
+
+		// 	//draw current time
+		// 	ctx.fillStyle = 'blue';
+		// 	ctx.fillRect(currentTimeOffset * step, 0, 1, height);
+		// 	// ctx.fillRect(currentTimeOffset * step, 0, 1, height);
+
+		// 	//draw stats
+		// 	var diff = currentTimeOffset - self.lastOffset;
+		// 	self.lastOffset = currentTimeOffset;
+		// 	ctx.fillStyle = 'rgba(255,255,255,.8)';
+		// 	ctx.fillRect(0, height - 20, height - 5, width - 10);
+		// 	ctx.fillStyle = 'black';
+		// 	ctx.fillText(`now: ${currentTime.toFixed(5)} limit: ${(currentTime + self.buffer.duration).toFixed(5)} offset: ${currentOffsetTime.toFixed(5)}`, 5, height - 5, width - 10);
+		// });
 
 		//check if new hypothetical offset would fit before the current time offset
-		return self.context.currentTime + self.buffer.duration - inprecision > currentOffsetTime + chunkDuration;
+		return self.context.currentTime - self.initialTime + self.buffer.duration > currentOffsetTime + chunkDuration;
 	}
 }
 
-var writeCount = 0;
 
 //just draw a new waveform canvas
 var canvas = document.createElement('canvas');
 canvas.width = 200;
 canvas.height = 150;
-document.body.appendChild(canvas);
 
 
 //draw buffer, highlight the subset
 var renderCount = 0;
-var lastOffset = 0
-function draw (buffer, offsetLeft, offsetRight, offsetNow) {
+function draw (buffer, fn) {
 	var data = new Float32Array(buffer.length);
 	buffer.copyFromChannel(data, 0);
-	if (renderCount++ > 100) return;
+	if (renderCount++ > 300) return;
 	raf(function () {
 		canvas = canvas.cloneNode();
 		document.body.appendChild(canvas);
@@ -149,10 +167,6 @@ function draw (buffer, offsetLeft, offsetRight, offsetNow) {
 
 		var step = Math.ceil( data.length / width );
 		var amp = height / 2;
-		var highlight = [
-			(width / data.length) * offsetLeft,
-			(width / data.length) * offsetRight
-		];
 
 		for(var i=0; i < width; i++){
 			var min = 1.0;
@@ -168,27 +182,7 @@ function draw (buffer, offsetLeft, offsetRight, offsetNow) {
 			ctx.fillRect(i,(1+min)*amp,1,Math.max(1,(max-min)*amp));
 		}
 
-		//draw buffering chunk
-		ctx.fillStyle = 'rgba(255,0,0,.5)';
-		ctx.fillRect(offsetLeft * (width / data.length), 0, (offsetRight - offsetLeft) * (width / data.length), height);
-
-		//draw current time
-		ctx.fillStyle = 'blue';
-		ctx.fillRect(offsetNow * (width / data.length) - 1, 0, 2, height);
-
-
-		//draw stats
-		var diff = offsetNow - lastOffset;
-		lastOffset = offsetNow;
-		ctx.fillStyle = 'rgba(255,255,255,.8)';
-		ctx.fillRect(0, height - 20, height - 5, width - 10);
-		ctx.fillStyle = 'black';
-		ctx.fillText(`d: ${diff}`, 5, height - 5, width - 10);
-
-		//draw played time rect
-		ctx.fillStyle = 'rgba(0,0,255,.6)';
-		ctx.fillRect((offsetNow - diff) * (width / data.length),
-
+		fn(canvas);
 	});
 }
 
@@ -199,7 +193,10 @@ var proto = Output.prototype;
 /** Number of channels to use as an output */
 proto.channels = 1;
 
-/** Default output buffer size */
+/**
+ * Default output buffer size
+ * Smaller sizes are dangerous due to inprecise currentTime detection step
+ */
 proto.bufferSize = 1024;
 
 

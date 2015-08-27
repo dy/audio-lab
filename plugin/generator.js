@@ -71,7 +71,7 @@ class Generator extends Readable {
 }
 
 
-Generator.prototype.sampleSize = 32;
+Generator.prototype.sampleSize = 64;
 Generator.prototype.sampleRate = 44100;
 
 
