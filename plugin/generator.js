@@ -3,11 +3,7 @@
  */
 
 import { Readable } from 'stream';
-import context from 'audio-context';
 import extend from 'xtend/mutable';
-
-
-const BLOCK_SIZE = 512*5;
 
 
 /**
@@ -24,18 +20,8 @@ class Generator extends Readable {
 		//take over options
 		extend(self, opts);
 
-		//ensure context
-		if (!self.context) {
-			self.context = context;
-		}
-
-		//initial time is 0
-		//FIXME: remove with external time
-		self.t = self.context.currentTime;
-		self.rate = self.context.sampleRate;
-
-		//generate chunk beforehead
-		self._generate();
+		//current item number
+		self.count = 0;
 	}
 
 
@@ -43,40 +29,50 @@ class Generator extends Readable {
 	_generate () {
 		var self = this;
 
-		self._chunk = new Buffer(BLOCK_SIZE * 4);
-		for (var i = 0; i < BLOCK_SIZE; i++) {
-			var t = self.t + i / self.rate;
-			self._chunk.writeFloatLE(self.generate(t), i*4);
+		var chunk = new Buffer(self.sampleSize * 4);
+
+		var t = self.count / self.sampleRate;
+
+		for (var i = 0; i < self.sampleSize; i++) {
+			chunk.writeFloatLE(self.generate(t + i / self.sampleRate), i*4);
 		}
 
-		self.t += BLOCK_SIZE / self.rate;
+		self.count += self.sampleSize;
+
+		return chunk;
 	}
 
 
 	/**
 	 * Read is called each time the connected block
 	 * is ready to eat some more generated data.
+	 * So feed it till consumer is full.
 	 *
 	 * @param {Number} size Number of bytes to generate
 	 */
 	_read (size) {
 		var self = this;
 
-		//send the chunk
-		self.push(self._chunk);
+		//send the chunk till possible
+		while (self.push(self._generate())) {
 
-		self._generate();
+		}
 	}
 
 
 	/**
 	 * User generator method, supposed to be overridden
-	 * Returns value
+	 * @param {number} time current time
+	 * @return {number} [-1..1]
 	 */
-	generate () {
+	generate (time) {
 		return Math.random();
 	}
 }
+
+
+Generator.prototype.sampleSize = 32;
+Generator.prototype.sampleRate = 44100;
 
 
 

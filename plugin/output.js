@@ -5,11 +5,14 @@
 import { Writable } from 'stream';
 import context from 'audio-context';
 import extend from 'xtend/mutable';
-import Clock from 'waaclock';
 import raf from 'component-raf';
 
 
 /**
+ * Sound rendering is based on looping audiobuffer
+ * it exposes the smallest possible latency avoiding GC
+ * comparing to scriptProcessorNode or web-audio nodes
+ *
  * @constructor
  */
 class Output extends Writable {
@@ -25,23 +28,23 @@ class Output extends Writable {
 			self.context = context;
 		}
 
-		//offset identifies last loaded data
+		//offset identifies last loaded data within buffer
 		self.offset = 0;
 
-		//absolute time value of an offset
-		self.offsetTime = 0;
+		//count represents the absolute data played
+		self.count = 0;
 
-		//sound rendering is based on repeating audiobuffersourcenode
-		//it exposes the smallest possible latency with no GC
-		//comparing to scriptProcessorNode
-		self._source = self.context.createBufferSource();
-		self._source.loop = true;
-		self._source.buffer = self.context.createBuffer(1, self.bufferSize, self.context.sampleRate);
-		self._source.connect(self.context.destination);
-		self._source.start();
+		//audioBufferSourceNode
+		self.bufferNode = self.context.createBufferSource();
+		self.bufferNode.loop = true;
+		self.bufferNode.buffer = self.context.createBuffer(1, self.bufferSize, self.context.sampleRate);
+		self.bufferNode.connect(self.context.destination);
+		self.bufferNode.start();
 
-		//start time offset
-		self.startOffsetTime = self.context.currentTime;
+		//save the time buffer started, to exclude time it wasn't sending data
+		self.initialTime = self.context.currentTime;
+
+		self.buffer = self.bufferNode.buffer;
 
 		return self;
 	}
@@ -53,11 +56,21 @@ class Output extends Writable {
 	_write (chunk, encoding, callback) {
 		var self = this;
 
-		var msGap = 100;
+		//if buffer is full - wait smallest possible time (next processor tick)
+		if (!self.isAvailableRoomFor(chunk)) {
+			if (renderCount < 100) {
+				var el = document.createElement('span');
+				el.innerHTML = 'x'
+				document.body.appendChild(el)
+			}
+			setTimeout(function () {
+				self._write(chunk, encoding, callback);
+			});
+			return;
+		}
 
-		var buffer = self._source.buffer;
+		var buffer = self.buffer;
 		var chunkLength = Math.floor(chunk.length / 4);
-		var chunkDuration = chunkLength / self.context.sampleRate;
 
 		var offsetBefore = self.offset;
 
@@ -68,31 +81,40 @@ class Output extends Writable {
 				data[self.offset] = chunk.readFloatLE(i*4);
 
 				self.offset++;
+				self.count++;
+
+				//reset offset
 				if (self.offset >= buffer.length) {
 					self.offset = 0;
 				}
 			}
 		}
 
-		var currentTimeOffset = Math.floor(((self.context.currentTime - self.startOffsetTime) * self.context.sampleRate) % buffer.length);
+		callback();
+	}
 
-		self.offsetTime += chunkDuration;
+	/** Check whether it is possible to fit some more data to the buffer */
+	isAvailableRoomFor (chunk) {
+		var self = this;
 
-		draw(buffer, offsetBefore, self.offset, currentTimeOffset);
-		// log(availDuration)
+		//additional gap to mind between current time and offset time
+		var inprecision = 0.02;
 
-		//check whether new hypothetical offset would fit before the current time offset
-		if (self.context.currentTime + buffer.duration - (msGap / 1000) > self.offsetTime + chunkDuration) {
-			setTimeout(function () {
-				callback();
-			}, 0);
-			return;
-		}
+		var buffer = self.buffer;
+		var chunkLength = Math.floor(chunk.length / 4);
+		var chunkDuration = chunkLength / self.context.sampleRate;
 
-		//else schedule chunk after it’s duration
-		setTimeout(function () {
-			callback();
-		}, chunkDuration * (1000 + msGap));
+		//get offset of a current playing time
+		//NOTE: potentially rough
+		var currentTimeOffset = Math.floor(((self.context.currentTime - self.initialTime) * self.context.sampleRate) % buffer.length);
+
+		//get time of a current offset within the buffer
+		var currentOffsetTime = self.count / self.context.sampleRate;
+
+		draw(buffer, self.offset, self.offset + chunkLength, currentTimeOffset);
+
+		//check if new hypothetical offset would fit before the current time offset
+		return self.context.currentTime + self.buffer.duration - inprecision > currentOffsetTime + chunkDuration;
 	}
 }
 
@@ -106,12 +128,15 @@ document.body.appendChild(canvas);
 
 
 //draw buffer, highlight the subset
+var renderCount = 0;
+var lastOffset = 0
 function draw (buffer, offsetLeft, offsetRight, offsetNow) {
 	var data = new Float32Array(buffer.length);
 	buffer.copyFromChannel(data, 0);
-
+	if (renderCount++ > 100) return;
 	raf(function () {
-		// canvas = canvas.cloneNode();
+		canvas = canvas.cloneNode();
+		document.body.appendChild(canvas);
 
 		var ctx = canvas.getContext('2d');
 		var width = canvas.width;
@@ -119,7 +144,7 @@ function draw (buffer, offsetLeft, offsetRight, offsetNow) {
 
 		ctx.clearRect(0,0,width,height);
 
-		//fill buffer
+		//draw buffer
 		ctx.fillStyle = 'black';
 
 		var step = Math.ceil( data.length / width );
@@ -133,21 +158,6 @@ function draw (buffer, offsetLeft, offsetRight, offsetNow) {
 			var min = 1.0;
 			var max = -1.0;
 
-			if (highlight[0] >= highlight[1]) {
-				if (i > highlight[1] && i < highlight[0]) {
-					ctx.fillStyle = 'black';
-				} else {
-					ctx.fillStyle = 'red';
-				}
-			}
-			else {
-				if (i > highlight[0] && i < highlight[1]) {
-					ctx.fillStyle = 'red';
-				} else {
-					ctx.fillStyle = 'black';
-				}
-			}
-
 			for (var j=0; j<step; j++) {
 				var datum = data[(i*step)+j];
 				if (datum < min)
@@ -158,21 +168,29 @@ function draw (buffer, offsetLeft, offsetRight, offsetNow) {
 			ctx.fillRect(i,(1+min)*amp,1,Math.max(1,(max-min)*amp));
 		}
 
+		//draw buffering chunk
+		ctx.fillStyle = 'rgba(255,0,0,.5)';
+		ctx.fillRect(offsetLeft * (width / data.length), 0, (offsetRight - offsetLeft) * (width / data.length), height);
+
+		//draw current time
 		ctx.fillStyle = 'blue';
-		ctx.fillRect(offsetNow * (width / data.length) -1, 0, 2,height);
+		ctx.fillRect(offsetNow * (width / data.length) - 1, 0, 2, height);
+
+
+		//draw stats
+		var diff = offsetNow - lastOffset;
+		lastOffset = offsetNow;
+		ctx.fillStyle = 'rgba(255,255,255,.8)';
+		ctx.fillRect(0, height - 20, height - 5, width - 10);
+		ctx.fillStyle = 'black';
+		ctx.fillText(`d: ${diff}`, 5, height - 5, width - 10);
+
+		//draw played time rect
+		ctx.fillStyle = 'rgba(0,0,255,.6)';
+		ctx.fillRect((offsetNow - diff) * (width / data.length),
+
 	});
 }
-
-
-		// var blocked = false;
-		// function log (i) {
-		// 	if (blocked) return true;
-		// 	blocked = true;
-		// 	console.log(i);
-		// 	setTimeout(function () {
-		// 		blocked = false;
-		// 	}, 100)
-		// }
 
 
 var proto = Output.prototype;
@@ -182,7 +200,7 @@ var proto = Output.prototype;
 proto.channels = 1;
 
 /** Default output buffer size */
-proto.bufferSize = 512*100;
+proto.bufferSize = 1024;
 
 
 export default Output;

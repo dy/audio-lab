@@ -1,13 +1,22 @@
-* Tempo
-* Mixer
-* Frequency representation
+* Replace settimeout with web-audio clock
+* Make output fill faster than a real time stream (stop playing)
+* Rhythm node
+* Mixer node
+* Analyser node
+* Normalize graphical view of graph
+* Frequency representation of a sound
+* Make output node show progress of a stream
+* (youtube source stream node)[https://github.com/JamesKyburz/youtube-audio-stream]
+* Stop by window unfocus
 
 
 * Make iPhone start button main start button, ie implement start/stop API
 
 * MVP - cover basic use-cases
 	* Saving project
-		* Short URL - github gist API
+		* Short URL
+			* github gist API?
+			* Meteor own server?
 		* Import midi/vextab files
 	* Script processor block
 		* + Generator, basically, is script processor block: it gets time and sample
