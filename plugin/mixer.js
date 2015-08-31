@@ -1,7 +1,7 @@
 /**
  * Mix multiple input streams syncronously.
- * Each input stream gets it’s own writable stream
- * to be able to control it’s pressure to sync output data.
+ * Each input stream pipes to own writable stream instance
+ * to control it’s pressure to sync output data.
  * So mixer stream is basically readable stream
  * which takes the data from multiple sources of writable streams,
  * as awkward as it might sound.
@@ -11,7 +11,7 @@ import {Readable, Writable, Duplex} from 'stream';
 
 
 /**
- * Mixer by fact is a duplex stream, but it is able to take multiple inputs.
+ * Duplex stream to be able to pipe in
  */
 class Mixer extends Duplex {
 	constructor (options) {
@@ -35,7 +35,7 @@ class Mixer extends Duplex {
 		})
 		.on('unpipe', function (stream) {
 			self.delete(stream);
-		})
+		});
 
 		//current mixed byte count
 		self.count = 0;
@@ -44,41 +44,35 @@ class Mixer extends Duplex {
 
 	/** Just a stub to pipe in */
 	_write (chunk, enc, cb) {
-		// console.log('_writeFake')
-		// setTimeout(cb);
 		cb();
 	}
 
 
 	/**
 	 * Consumer wants more.
-	 * Try to merge frame, if available
+	 * Try to merge frame
 	 */
 	_read (size) {
 		this.stopped = false;
-		// console.log('_read')
 		this._mergeFrame();
 	}
 
 
 	/**
-	 * Try to merge & push frame from every
+	 * Slice data from every input, mix it, push
 	 */
 	_mergeFrame () {
 		var self = this;
 
-		//if is stopped - don’t overfeed consumer
+		//don’t overfeed the consumer
 		if (self.stopped) {
-			// console.log('overfeed')
 			return false;
 		}
 
 		//ignore zero inputs
 		if (!self.inputs.length) return false;
 
-		// console.log('_mergeFrame')
-
-		//try to fill blocks
+		//release inputs to generate some more data
 		self.data.forEach(function (data, i) {
 			if (data.length < self.blockSize * 4) {
 				var ready = self.controllers[i].ready;
@@ -87,7 +81,7 @@ class Mixer extends Duplex {
 			}
 		});
 
-		//if there is no enough data - ignore
+		//if there is still not enough data - ignore
 		if (self.data.some(function (data) {
 			return data.length < self.blockSize*4;
 		})) {
@@ -103,10 +97,8 @@ class Mixer extends Duplex {
 				sum += data.readFloatLE(i * 4);
 			});
 			chunk.writeFloatLE(sum/self.inputs.length, i*4);
+			self.count++;
 		}
-
-		//count data
-		self.count += self.blockSize;
 
 		//slice data
 		self.data = self.data.map(function (data) {
@@ -118,8 +110,8 @@ class Mixer extends Duplex {
 			self._mergeFrame();
 		}
 		//or stop if reader is full
+		//hold on inputs as well
 		else {
-			// console.log('full')
 			self.stopped = true;
 		}
 	}
@@ -145,9 +137,7 @@ class Mixer extends Duplex {
 		self.controllers.push(pressureController);
 
 		//once writable gets data - it should wait for others
-
 		pressureController._write = function (chunk, encoding, cb) {
-			// console.log('_write')
 			//save data
 			self.data[streamIdx] = Buffer.concat([self.data[streamIdx], chunk]);
 
@@ -157,7 +147,6 @@ class Mixer extends Duplex {
 			//try to merge a chunk to an output
 			self._mergeFrame();
 		};
-
 
 		stream.pipe(pressureController);
 
@@ -170,11 +159,15 @@ class Mixer extends Duplex {
 	delete (stream) {
 		var self = this;
 
-		//TODO
+		var streamIdx = self.inputs.indexOf(stream);
 
-		// self.inputs.delete(stream);
+		if (streamIdx < 0) return;
 
-		// stream.off('data', );
+		self.inputs[streamIdx].unpipe(self.controllers[streamIdx]);
+
+		self.inputs.splice(streamIdx, 1);
+		self.data.splice(streamIdx, 1);
+		self.controllers.splice(streamIdx, 1);
 
 		return self;
 	}
