@@ -1,7 +1,10 @@
-* Replace settimeout with web-audio clock
+* Use ndarrays?
+	* Or better PCM-streams?
+	* Or use universal detector of the type of input: pcm, ndarray, audiobuffer, simple array etc.
+* Make output always be in front of current time
+* Mixer node
 * Make output fill faster than a real time stream (stop playing)
 * Rhythm node
-* Mixer node
 * Analyser node
 * Normalize graphical view of graph
 * Frequency representation of a sound

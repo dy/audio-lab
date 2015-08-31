@@ -51,11 +51,11 @@ class Generator extends Readable {
 	 * @param {Number} size Number of bytes to generate
 	 */
 	_read (size) {
+		// console.log('_read gen', size)
 		var self = this;
 
 		//send the chunk till possible
-		while (self.push(self._generate())) {
-
+		while (/*self.count < 1024*16 &&*/ self.push(self._generate())) {
 		}
 	}
 

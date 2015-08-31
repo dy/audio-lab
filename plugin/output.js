@@ -1,5 +1,5 @@
 /**
- * Output stream - sends data to an audioContext destination
+ * Output stream - sends input data to an audioContext destination.
  */
 
 import { Writable } from 'stream';
@@ -11,7 +11,7 @@ import raf from 'component-raf';
 /**
  * Sound rendering is based on looping audiobuffer
  * it exposes the smallest possible latency avoiding GC
- * comparing to scriptProcessorNode or web-audio nodes
+ * comparing to scriptProcessorNode
  *
  * @constructor
  */
@@ -91,9 +91,6 @@ class Output extends Writable {
 	/** Check whether it is possible to fit some more data to the buffer */
 	isAvailableRoomFor (chunk) {
 		var self = this;
-
-		//additional gap to mind between current time and offset time
-		var inprecision = 0.02;
 
 		var buffer = self.buffer;
 		var chunkLength = Math.floor(chunk.length / 4);
@@ -195,9 +192,10 @@ proto.channels = 1;
 
 /**
  * Default output buffer size
- * Smaller sizes are dangerous due to inprecise currentTime detection step
+ * Smaller sizes are dangerous due to interference w/processor ticks
+ * If GC is noticeable - increase it
  */
-proto.bufferSize = 1024;
+proto.bufferSize = 256 * 16;
 
 
 export default Output;
