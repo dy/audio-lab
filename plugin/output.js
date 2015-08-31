@@ -190,12 +190,13 @@ var proto = Output.prototype;
 /** Number of channels to use as an output */
 proto.channels = 1;
 
+
 /**
- * Default output buffer size
+ * Output buffer size
  * Smaller sizes are dangerous due to interference w/processor ticks
- * If GC is noticeable - increase it
+ * If GC is noticeable - increase that
  */
-proto.bufferSize = 256 * 16;
+proto.bufferSize = 256 * 8;
 
 
 export default Output;

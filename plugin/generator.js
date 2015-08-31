@@ -29,15 +29,15 @@ class Generator extends Readable {
 	_generate () {
 		var self = this;
 
-		var chunk = new Buffer(self.sampleSize * 4);
+		var chunk = new Buffer(self.blockSize * 4);
 
-		var t = self.count / self.sampleRate;
+		var t = self.count / self.rate;
 
-		for (var i = 0; i < self.sampleSize; i++) {
-			chunk.writeFloatLE(self.generate(t + i / self.sampleRate), i*4);
+		for (var i = 0; i < self.blockSize; i++) {
+			chunk.writeFloatLE(self.generate(t + i / self.rate), i*4);
 		}
 
-		self.count += self.sampleSize;
+		self.count += self.blockSize;
 
 		return chunk;
 	}
@@ -71,8 +71,8 @@ class Generator extends Readable {
 }
 
 
-Generator.prototype.sampleSize = 64;
-Generator.prototype.sampleRate = 44100;
+Generator.prototype.blockSize = 64;
+Generator.prototype.rate = 44100;
 
 
 

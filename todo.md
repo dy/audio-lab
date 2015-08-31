@@ -1,9 +1,9 @@
 * Use ndarrays?
 	* Or better PCM-streams?
 	* Or use universal detector of the type of input: pcm, ndarray, audiobuffer, simple array etc.
+	* Simple buffer which is used now is just a specific type of PCM
+	* ndarrays have no .map etc methods
 * Make output always be in front of current time
-* Mixer node
-* Make output fill faster than a real time stream (stop playing)
 * Rhythm node
 * Analyser node
 * Normalize graphical view of graph

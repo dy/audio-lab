@@ -62,7 +62,7 @@ class Mixer extends Duplex {
 
 
 	/**
-	 * Try to merge & push another frame
+	 * Try to merge & push frame from every
 	 */
 	_mergeFrame () {
 		var self = this;
@@ -105,22 +105,19 @@ class Mixer extends Duplex {
 			chunk.writeFloatLE(sum/self.inputs.length, i*4);
 		}
 
+		//count data
+		self.count += self.blockSize;
+
 		//slice data
 		self.data = self.data.map(function (data) {
 			return data.slice(self.blockSize * 4);
 		});
 
+		//try to push some more
 		if (self.push(chunk)) {
-			//notify each pressure controller to be ready to read more
-			self.controllers.forEach(function (controller) {
-				var ready = controller.ready;
-				controller.ready = null;
-				ready && ready.call(controller);
-			});
-
-			//try to push some more
 			self._mergeFrame();
 		}
+		//or stop if reader is full
 		else {
 			// console.log('full')
 			self.stopped = true;
@@ -154,7 +151,6 @@ class Mixer extends Duplex {
 			//save data
 			self.data[streamIdx] = Buffer.concat([self.data[streamIdx], chunk]);
 
-
 			//save last callback to wait for others
 			pressureController.ready = cb;
 
@@ -185,7 +181,7 @@ class Mixer extends Duplex {
 }
 
 /** Size of a single chunk to pack output data */
-Mixer.prototype.blockSize = 128;
+Mixer.prototype.blockSize = 64;
 
 
 export default Mixer;
