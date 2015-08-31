@@ -196,7 +196,7 @@ proto.channels = 1;
  * Smaller sizes are dangerous due to interference w/processor ticks
  * If GC is noticeable - increase that
  */
-proto.bufferSize = 256 * 8;
+proto.bufferSize = 256 * 16;
 
 
 export default Output;

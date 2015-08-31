@@ -1,25 +1,26 @@
-* Use ndarrays?
-	* Or better PCM-streams?
-	* Or use universal detector of the type of input: pcm, ndarray, audiobuffer, simple array etc.
-	* Simple buffer which is used now is just a specific type of PCM
-	* ndarrays have no .map etc methods
-* Make output always be in front of current time
 * Rhythm node
 * Analyser node
 * Normalize graphical view of graph
 * Frequency representation of a sound
-* Make output node show progress of a stream
+* Make output node show progress of a stream (soundwaves?)
 * (youtube source stream node)[https://github.com/JamesKyburz/youtube-audio-stream]
 * Stop by window unfocus
+* Ensure format of PCM stream used
+* Make output always be in front of current time
 
 
 * Make iPhone start button main start button, ie implement start/stop API
 
 * MVP - cover basic use-cases
+	* MIDI-in - record songs
+		* Piano roll display
+		* Piano roll player
+		* Notes renderer
 	* Saving project
 		* Short URL
 			* github gist API?
 			* Meteor own server?
+		* Github account?
 		* Import midi/vextab files
 	* Script processor block
 		* + Generator, basically, is script processor block: it gets time and sample
@@ -30,9 +31,6 @@
 		* + Resize
 		* + Drag
 		* Stick
-	* MIDI-in - record songs
-		* Piano roll display/player
-		* Vextab notes renderer
 
 * Shoulds
 	* Make connections drop-in, so that if a new block is placed over a connection, than the connection gets sectioned in between and a new block takes it’s place.

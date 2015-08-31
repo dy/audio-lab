@@ -1,15 +1,11 @@
 /**
- * Simple volume block
- * Temporary fast solution
+ * Simple volume regulator
  */
 
-var Block = require('./block');
-var isFn = require('is-function');
-var on = require('emmy/on');
-var q = require('queried');
-var inherits = require('inherits');
-var isString = require('mutype/is-string');
+//TODO: add value as dB
 
+import extend from 'xtend/mutable';
+import {Transform} from 'stream';
 
 
 /**
@@ -17,37 +13,49 @@ var isString = require('mutype/is-string');
  *
  * @constructor
  */
-function Gain (options) {
-	var self = this;
+class Gain extends Transform {
+	constructor (options) {
+		super();
 
-	Block.apply(self, arguments);
+		var self = this;
 
-	self.input = q('.gain-value', self.content);
+		//shorthand option
+		if (typeof options === 'number') {
+			self.value = options;
+		}
 
-	on(self.input, 'input', function () {
-		self.node.gain.value = self.input.value;
-	});
+		//longhand option
+		else {
+			extend(self, options);
+		}
 
-	self.node = self.app.context.createGain();
-	self.node.gain.value = self.input.value;
+		return self;
+	}
 
-	//go ready state
-	self.state = 'ready';
+	_transform (chunk, enc, cb) {
+		var self = this;
 
-	return self;
+		var chunkLen = Math.round(chunk.length / 4);
+
+		for (var i = 0; i < chunkLen; i++) {
+			var value = chunk.readFloatLE(i*4) * self.value;
+			chunk.writeFloatLE(value, i*4);
+		}
+
+		cb(null, chunk);
+	}
 }
 
-inherits(Gain, Block);
 
-var proto = Gain.prototype;
+/** Value as a multiplier */
+Gain.prototype.value = 1;
 
-
-Gain.displayName = 'Gain';
 
 
 /**
  * Gain layout
  */
+/*
 proto.contentTpl = `
 <input class="gain-value" type="range" value="1" step="0.01" min="0" max="1" orientation="vertical"/>
 <button class="gain-mute">x</button>
@@ -56,36 +64,7 @@ proto.contentTpl = `
 proto.thumbnailTpl = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path fill="none" stroke="#000" stroke-width="4.963" stroke-miterlimit="10" d="M91.75 69.492H17.583L91.75 39.508z"/><path d="M65.75 50.683l-45 18.192h45"/></svg>
 `;
+*/
 
 
-
-/**
- * Represent instance as JSON
- */
-proto.toJSON = function () {
-	var self = this;
-
-	var data = Block.prototype.toJSON.apply(self);
-
-	data.value = self.input.value;
-
-	return data;
-};
-
-
-/**
- * Load from JSON
- */
-proto.fromJSON = function (data) {
-	var self = this;
-
-	Block.prototype.fromJSON.call(self, data);
-	self.input.value = data.value;
-	self.node.gain.value = parseFloat(data.value);
-
-	return self;
-};
-
-
-
-module.exports = Gain;
+export default Gain;

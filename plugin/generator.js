@@ -7,18 +7,22 @@ import extend from 'xtend/mutable';
 
 
 /**
- * In real-time generation we have to make sure that generated data isn’t sent more often than a real time
- *
  * @class Generator
  */
 class Generator extends Readable {
 	constructor (opts) {
-		super(opts);
+		super();
 
 		var self = this;
 
+		if (typeof opts === 'function') {
+			self.generate = opts;
+		}
 		//take over options
-		extend(self, opts);
+		else {
+			extend(self, opts);
+		}
+
 
 		//current item number
 		self.count = 0;
