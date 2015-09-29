@@ -1,3 +1,8 @@
+* Add visual wrapper
+* Add saving projects
+* Use worker thread to calc data, use it’s events to provide streams. It’s too difficult for mixer to handle’em all, takes all the processor time
+* Ensure format of PCM stream used
+* Implement channels: from mono to 5.1
 * Rhythm node
 * Analyser node
 * Normalize graphical view of graph
@@ -5,23 +10,23 @@
 * Make output node show progress of a stream (soundwaves?)
 * (youtube source stream node)[https://github.com/JamesKyburz/youtube-audio-stream]
 * Stop by window unfocus
-* Ensure format of PCM stream used
 * Make output always be in front of current time
 
 
 * Make iPhone start button main start button, ie implement start/stop API
 
 * MVP - cover basic use-cases
-	* MIDI-in - record songs
-		* Piano roll display
-		* Piano roll player
-		* Notes renderer
 	* Saving project
 		* Short URL
 			* github gist API?
 			* Meteor own server?
+			* jsfiddle code export?
 		* Github account?
-		* Import midi/vextab files
+	* MIDI-in - record songs
+		* Piano roll display
+		* Piano roll player
+		* Notes renderer
+	* Import midi/vextab files
 	* Script processor block
 		* + Generator, basically, is script processor block: it gets time and sample
 		* + Perfectize code editing

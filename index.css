@@ -17,12 +17,30 @@ input {
 .lab {
 	position: relative;
 	/*padding-top: 2rem;*/
-	/*min-height: 30rem;*/
+	min-height: 30rem;
 }
 
 
 
 /** Appender button & dialog */
+.lab-append {
+	width: 3rem;
+	height: 3rem;
+	line-height: 3rem;
+	font-weight: normal;
+	color: white;
+	text-align: center;
+	background: black;
+	border-radius: 1.5rem;
+	margin-top: 1rem;
+	margin-left: 1rem;
+	font-size: 2.4rem;
+	cursor: pointer;
+}
+.lab-append.lab-append-active {
+	background: lightgray;
+	color: darkgray;
+}
 .lab-appender {
 	max-width: 50vw;
 	display: flex;
@@ -36,7 +54,16 @@ input {
 	width: 4rem;
 	height: 4rem;
 	text-align: center;
-	line-height: 4rem;
+	line-height: 3rem;
+}
+.lab-appender-item:after {
+	content: attr(data-append-block-name);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	line-height: 1rem;
+	font-size: .8rem;
 }
 .lab-appender-item svg {
 	display: inline-block;
@@ -82,7 +109,7 @@ input {
 	position: absolute;
 	top: 0;
 	left: 0;
-	max-width: 4rem;
+	/*height: 4em;*/
 }
 .block-error:after {
 	content: '';
@@ -124,6 +151,7 @@ input {
 	resize: none;
 	background: none;
 	max-height: 4rem;
+	position: absolute;
 }
 
 .block-out, .block-in {

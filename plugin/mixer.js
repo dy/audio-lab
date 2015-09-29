@@ -19,6 +19,8 @@ class Mixer extends Duplex {
 
 		var self = this;
 
+		self.setMaxListeners(100);
+
 		//input streams
 		self.inputs = [];
 

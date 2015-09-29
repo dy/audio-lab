@@ -79,5 +79,4 @@ Generator.prototype.blockSize = 64;
 Generator.prototype.rate = 44100;
 
 
-
 export default Generator;

@@ -9,6 +9,7 @@ In order to efficiently achieve the goal of the project, it should meet principl
 		* do not force instrumentary, as reason does
 	* with abstract presentation behind - to tune & precise the sound later
 * Share the link to a musical piece
+	* Or musical experiment. To share musical ideas instead of soundcloud/vk/etc, just easily let musicians show what they have. E.g. that spiral frequency movement to share w/tanya.
 * Create versions of a block setting, of a track
 * Render the sound to wav/mp3
 	* highest quality
@@ -20,7 +21,11 @@ In order to efficiently achieve the goal of the project, it should meet principl
 
 ## Wishes
 
-* Launch project CLI, as browserify
+* Every music project is a github project, and a link is a gh-pages branch.
+* `cat source.wav | lab -s 0:120 index.js | audio-compressor | audio-mastering preset.js > result.wav`
+	* easily create broadcast
+	* render to a file
+* `npm start` → `lab | sax` to fastly preview file by default
 * Pipe blocks via CLI
 * Have blocks as a separate packages, dependless of audio-lab, working with PCM
 * Broadcast project to internet-radio
@@ -42,10 +47,12 @@ In order to efficiently achieve the goal of the project, it should meet principl
 * [a] Project should be able to be rendered via CLI, as browserify does.
 * [i] Blocks are streams.
 * [i] Blocks are separate atomic packages.
+* [i] Audio-lab is just a GUI-wrapper on underlying scheme of sound-generation.
 * [s] PCM format is used to convey the audio data. Needed for compatability.
 	* ndarray?
 	* buffer?
 	* audiobuffer?
 	* specific PCM compatible w/other libs like mp3, ogg etc?
 * [t] No time concept: only sequence of bytes. System is a phenomenon, time is measure.
+* [t] Every music composition is a program project, with it’s production, development stages, buildfile.
 * [t] Lab manages blocks, blocks manage connections. Though connections and blocks are self-sufficient units. Blocks and connections know nothing about lab (as people about god).
