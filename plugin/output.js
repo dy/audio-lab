@@ -2,6 +2,9 @@
  * Output stream - sends input data to an audioContext destination.
  */
 
+//TODO: fill with zeros played sound to avoid disconnected cycles
+//TODO: test very very delayed generator, to always be ahead of the current time
+
 import { Writable } from 'stream';
 import context from 'audio-context';
 import extend from 'xtend/mutable';

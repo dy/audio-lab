@@ -79,4 +79,11 @@ Generator.prototype.blockSize = 64;
 Generator.prototype.rate = 44100;
 
 
+
+/** Audio-lab rendering settings */
+Generator.title = 'Generator';
+Generator.numberOfOutputs = 1;
+Generator.numberOfInputs = 0;
+
+
 export default Generator;

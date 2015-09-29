@@ -4,7 +4,7 @@
   "description": "Audio lab",
   "main": "index.js",
   "scripts": {
-    "watch": "watchify -t babelify -r ./index:audio-lab -r ./plugin/output:audio-lab-output -r ./plugin/generator:audio-lab-generator -d -o test/bundle.js",
+    "watch": "watchify -t babelify -r ./index:audio-lab -r ./plugin/output:audio-lab-output -r ./plugin/generator:audio-lab-generator -r ./plugin/mixer:audio-lab-mixer -d -o test/bundle.js",
     "build": "npm run build-js && npm run build-css",
     "build-js": "browserify -t babelify -r ./index:audio-lab | uglifyjs -c -- > test/bundle.js",
     "build-css": "postcss -u postcss-import -u autoprefixer -u cssnano index.css -o test/index.css "

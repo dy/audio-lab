@@ -4,7 +4,7 @@
  * to control it’s pressure to sync output data.
  * So mixer stream is basically readable stream
  * which takes the data from multiple sources of writable streams,
- * as awkward as it might sound.
+ * as awkward as it may sound.
  */
 
 import {Readable, Writable, Duplex} from 'stream';
@@ -177,6 +177,13 @@ class Mixer extends Duplex {
 
 /** Size of a single chunk to pack output data */
 Mixer.prototype.blockSize = 64;
+
+
+
+/** Audio-lab rendering settings */
+Mixer.title = 'Mixer';
+Mixer.numberOfOutputs = 1;
+Mixer.numberOfInputs = 16;
 
 
 export default Mixer;
