@@ -44,10 +44,21 @@ class Mixer extends Duplex {
 	}
 
 
-	/** Just a stub to pipe in */
+	/**
+	 * A stub to provide mixer as a duplex stream.
+	 * SetTimeout is needed for microdelay to let unpipe.
+	 * Otherwise there’s infinite recursion.
+	 */
 	_write (chunk, enc, cb) {
-		cb();
+		setTimeout(function () {
+			cb();
+		});
 	}
+	// _writev (chunks, cb) {
+	// 	setTimeout(function () {
+	// 		cb();
+	// 	});
+	// }
 
 
 	/**
@@ -141,13 +152,19 @@ class Mixer extends Duplex {
 		//once writable gets data - it should wait for others
 		pressureController._write = function (chunk, encoding, cb) {
 			//save data
-			self.data[streamIdx] = Buffer.concat([self.data[streamIdx], chunk]);
+			// console.log(streamIdx, self.data[streamIdx])
+			try {
+				self.data[streamIdx] = Buffer.concat([self.data[streamIdx], chunk]);
 
-			//save last callback to wait for others
-			pressureController.ready = cb;
+				//save last callback to wait for others
+				pressureController.ready = cb;
 
-			//try to merge a chunk to an output
-			self._mergeFrame();
+				//try to merge a chunk to an output
+				self._mergeFrame();
+			} catch (e) {
+				console.log(e, streamIdx, self.data, chunk);
+				throw e;
+			}
 		};
 
 		stream.pipe(pressureController);
@@ -162,10 +179,12 @@ class Mixer extends Duplex {
 		var self = this;
 
 		var streamIdx = self.inputs.indexOf(stream);
-
 		if (streamIdx < 0) return;
 
-		self.inputs[streamIdx].unpipe(self.controllers[streamIdx]);
+		self.controllers[streamIdx]._write = null;
+		self.controllers[streamIdx].end();
+		//FIXME: in some way this causes inner infinite recursion
+		stream.unpipe(self.controllers[streamIdx]);
 
 		self.inputs.splice(streamIdx, 1);
 		self.data.splice(streamIdx, 1);
@@ -182,8 +201,10 @@ Mixer.prototype.blockSize = 64;
 
 /** Audio-lab rendering settings */
 Mixer.title = 'Mixer';
-Mixer.numberOfOutputs = 1;
-Mixer.numberOfInputs = 16;
+
+
+Mixer.prototype.numberOfOutputs = 1;
+Mixer.prototype.numberOfInputs = 16;
 
 
 export default Mixer;

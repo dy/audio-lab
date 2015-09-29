@@ -1,3 +1,9 @@
+
+//TODO: Gain: add value as dB
+//TODO: fill with zeros played sound to avoid disconnected cycles
+//TODO: test very very delayed generator, to always be ahead of the current time
+//TODO: solve generator-related offing to mixer question
+
 * Add visual wrapper
 * Add saving projects
 * Use worker thread to calc data, use it’s events to provide streams. It’s too difficult for mixer to handle’em all, takes all the processor time

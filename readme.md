@@ -45,17 +45,23 @@ MyPlugin.title = 'MyPlugin';
 //Thumbnail of a node
 MyPlugin.thumbnail = '';
 
-//Number of inputs/outputs
-MyPlugin.numberOfInputs = 1;
-MyPlugin.numberOfOutputs = 0;
+
+//Number of inputs/outputs, redefinable via options
+MyPlugin.prototype.numberOfInputs = 1;
+MyPlugin.prototype.numberOfOutputs = 0;
 
 //Controlling panel
 MyPlugin.prototype.createElement = function () {
 
 };
 
-//Way to serialize plugin
+//Serialize as JSON
 MyPlugin.prototype.toJSON = function () {
+
+};
+
+//Serialize as Code
+MyPlugin.prototype.toCode = function () {
 
 };
 ```

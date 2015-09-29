@@ -55,11 +55,10 @@ class Generator extends Readable {
 	 * @param {Number} size Number of bytes to generate
 	 */
 	_read (size) {
-		// console.log('_read gen', size)
 		var self = this;
 
 		//send the chunk till possible
-		while (/*self.count < 1024*16 &&*/ self.push(self._generate())) {
+		while (self.push(self._generate())) {
 		}
 	}
 
@@ -79,11 +78,11 @@ Generator.prototype.blockSize = 64;
 Generator.prototype.rate = 44100;
 
 
-
 /** Audio-lab rendering settings */
+Generator.prototype.numberOfOutputs = 1;
+Generator.prototype.numberOfInputs = 0;
+
 Generator.title = 'Generator';
-Generator.numberOfOutputs = 1;
-Generator.numberOfInputs = 0;
 
 
 export default Generator;
