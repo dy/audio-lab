@@ -151,20 +151,20 @@ class Mixer extends Duplex {
 
 		//once writable gets data - it should wait for others
 		pressureController._write = function (chunk, encoding, cb) {
+			//find own index
+			var streamIdx = self.controllers.indexOf(pressureController);
+
+			//ignore removed stream
+			if (streamIdx < 0) return;
+
 			//save data
-			// console.log(streamIdx, self.data[streamIdx])
-			try {
-				self.data[streamIdx] = Buffer.concat([self.data[streamIdx], chunk]);
+			self.data[streamIdx] = Buffer.concat([self.data[streamIdx], chunk]);
 
-				//save last callback to wait for others
-				pressureController.ready = cb;
+			//save last callback to wait for others
+			this.ready = cb;
 
-				//try to merge a chunk to an output
-				self._mergeFrame();
-			} catch (e) {
-				console.log(e, streamIdx, self.data, chunk);
-				throw e;
-			}
+			//try to merge a chunk to an output
+			self._mergeFrame();
 		};
 
 		stream.pipe(pressureController);
@@ -181,11 +181,12 @@ class Mixer extends Duplex {
 		var streamIdx = self.inputs.indexOf(stream);
 		if (streamIdx < 0) return;
 
+		//set end flag
 		self.controllers[streamIdx]._write = null;
 		self.controllers[streamIdx].end();
-		//FIXME: in some way this causes inner infinite recursion
 		stream.unpipe(self.controllers[streamIdx]);
 
+		//forget about controller
 		self.inputs.splice(streamIdx, 1);
 		self.data.splice(streamIdx, 1);
 		self.controllers.splice(streamIdx, 1);
@@ -195,7 +196,7 @@ class Mixer extends Duplex {
 }
 
 /** Size of a single chunk to pack output data */
-Mixer.prototype.blockSize = 64;
+Mixer.prototype.blockSize = 128;
 
 
 

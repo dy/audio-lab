@@ -74,7 +74,7 @@ class Generator extends Readable {
 }
 
 
-Generator.prototype.blockSize = 64;
+Generator.prototype.blockSize = 126;
 Generator.prototype.rate = 44100;
 
 
