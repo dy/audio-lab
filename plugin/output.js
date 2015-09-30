@@ -12,7 +12,14 @@ import raf from 'component-raf';
 /**
  * Sound rendering is based on looping audiobuffer
  * it exposes the smallest possible latency avoiding GC
- * comparing to scriptProcessorNode
+ * comparing to scriptProcessorNode.
+ *
+ * To make it realtime it is necessary to make sure that
+ * buffer filling triggers stepped in equal intervals
+ * regardless of the input data availability.
+ *
+ * But output is also via back-pressure mechanism controls how other nodes are rendered
+ * In that, it is possible to render in background faster than realtime
  *
  * @constructor
  */
@@ -29,23 +36,64 @@ class Output extends Writable {
 			self.context = context;
 		}
 
-		//offset identifies last loaded data within buffer
+		//offset identifies last loaded data within audio buffer
 		self.offset = 0;
 
-		//count represents the absolute data played
+		//count represents the absolute data loaded within audio buffer
 		self.count = 0;
 
-		//audioBufferSourceNode
+		//audioBufferSourceNode, main output
 		self.bufferNode = self.context.createBufferSource();
 		self.bufferNode.loop = true;
-		self.bufferNode.buffer = self.context.createBuffer(1, self.bufferSize, self.context.sampleRate);
+		self.bufferNode.buffer = self.context.createBuffer(1, self.audioBufferSize, self.context.sampleRate);
 		self.bufferNode.connect(self.context.destination);
 		self.bufferNode.start();
-
-		//save the time buffer started, to exclude time it wasn't sending data
-		self.initialTime = self.context.currentTime;
-
 		self.buffer = self.bufferNode.buffer;
+
+
+		//ready data to play
+		self.data = [];
+		self.lastTime = self.context.currentTime;
+
+
+		//audio buffer realtime ticked cycle
+		self.bufferInterval = setInterval(function () {
+			var timeSpent = self.context.currentTime - self.lastTime;
+			var realCount = Math.floor(self.context.currentTime * self.context.sampleRate);
+
+			//min chunk size is the time passed
+			var chunkSize = Math.floor(timeSpent * self.context.sampleRate);
+
+			//max chunk size is avail space up the next audio buffer cycle
+			if (self.count <= realCount) {
+				chunkSize = Math.max(chunkSize, (realCount - self.count) + self.buffer.length );
+			}
+
+			//fill chunk with available data and the rest - with zeros
+			var channelData = self.buffer.getChannelData(0);
+			var value;
+
+			for (var i = 0; i < chunkSize; i++) {
+				if (self.data.length) {
+					value = self.data.shift();
+				}
+				else {
+					value = 0;
+				}
+
+				channelData[self.offset++] = value;
+				self.count++;
+
+				// reset offset
+				if (self.offset >= channelData.length) {
+					self.offset = 0;
+				}
+			}
+
+			self.emit('tick');
+
+			self.lastTime = self.context.currentTime;
+		});
 
 		return self;
 	}
@@ -57,131 +105,24 @@ class Output extends Writable {
 	_write (chunk, encoding, callback) {
 		var self = this;
 
-		//if buffer is full - wait smallest possible time (next processor tick)
-		if (!self.isAvailableRoomFor(chunk)) {
-			setTimeout(function () {
+		var chunkLength = Math.floor(chunk.length / 4);
+
+		//if data buffer is full - wait till next tick
+		if (self.data.length + chunkLength >= self.bufferSize) {
+			self.once('tick', function () {
+			// setTimeout(function(){
 				self._write(chunk, encoding, callback);
 			});
 			return;
 		}
 
-		var buffer = self.buffer;
-		var chunkLength = Math.floor(chunk.length / 4);
-
-		var offsetBefore = self.offset;
-
-		//fill the buffer
-		for (var channel = 0; channel < buffer.numberOfChannels; channel++) {
-			var data = buffer.getChannelData(channel);
-			for (var i = 0; i < chunkLength; i++) {
-				data[self.offset] = chunk.readFloatLE(i*4);
-
-				self.offset++;
-				self.count++;
-
-				//reset offset
-				if (self.offset >= buffer.length) {
-					self.offset = 0;
-				}
-			}
+		//save the data
+		for (var i = 0; i < chunkLength; i++) {
+			self.data.push(chunk.readFloatLE(i*4));
 		}
 
 		callback();
 	}
-
-	/** Check whether it is possible to fit some more data to the buffer */
-	isAvailableRoomFor (chunk) {
-		var self = this;
-
-		var buffer = self.buffer;
-		var chunkLength = Math.floor(chunk.length / 4);
-		var chunkDuration = chunkLength / self.context.sampleRate;
-
-
-		//get time of a current offset within the buffer
-		var currentOffsetTime = self.count / self.context.sampleRate;
-
-
-		// debug
-		// var offset = self.offset;
-		// var currentTime = self.context.currentTime - self.initialTime;
-		// var currentTimeOffset = Math.floor((currentTime * self.context.sampleRate) % buffer.length);
-
-		// draw(buffer, function (canvas) {
-		// 	var ctx = canvas.getContext('2d');
-		// 	var width = canvas.width;
-		// 	var height = canvas.height;
-
-		// 	var step = (width / buffer.length);
-
-		// 	//draw buffering chunk
-		// 	ctx.fillStyle = 'rgba(255,0,0,.5)';
-		// 	ctx.fillRect(offset * step, 0, chunkLength * step, height);
-
-		// 	//draw current time
-		// 	ctx.fillStyle = 'blue';
-		// 	ctx.fillRect(currentTimeOffset * step, 0, 1, height);
-		// 	// ctx.fillRect(currentTimeOffset * step, 0, 1, height);
-
-		// 	//draw stats
-		// 	var diff = currentTimeOffset - self.lastOffset;
-		// 	self.lastOffset = currentTimeOffset;
-		// 	ctx.fillStyle = 'rgba(255,255,255,.8)';
-		// 	ctx.fillRect(0, height - 20, height - 5, width - 10);
-		// 	ctx.fillStyle = 'black';
-		// 	ctx.fillText(`now: ${currentTime.toFixed(5)} limit: ${(currentTime + self.buffer.duration).toFixed(5)} offset: ${currentOffsetTime.toFixed(5)}`, 5, height - 5, width - 10);
-		// });
-
-		//check if new hypothetical offset would fit before the current time offset
-		return self.context.currentTime - self.initialTime + self.buffer.duration > currentOffsetTime + chunkDuration;
-	}
-}
-
-
-//just draw a new waveform canvas
-var canvas = document.createElement('canvas');
-canvas.width = 200;
-canvas.height = 150;
-
-
-//draw buffer, highlight the subset
-var renderCount = 0;
-function draw (buffer, fn) {
-	var data = new Float32Array(buffer.length);
-	buffer.copyFromChannel(data, 0);
-	if (renderCount++ > 300) return;
-	raf(function () {
-		canvas = canvas.cloneNode();
-		document.body.appendChild(canvas);
-
-		var ctx = canvas.getContext('2d');
-		var width = canvas.width;
-		var height = canvas.height;
-
-		ctx.clearRect(0,0,width,height);
-
-		//draw buffer
-		ctx.fillStyle = 'black';
-
-		var step = Math.ceil( data.length / width );
-		var amp = height / 2;
-
-		for(var i=0; i < width; i++){
-			var min = 1.0;
-			var max = -1.0;
-
-			for (var j=0; j<step; j++) {
-				var datum = data[(i*step)+j];
-				if (datum < min)
-					min = datum;
-				if (datum > max)
-					max = datum;
-			}
-			ctx.fillRect(i,(1+min)*amp,1,Math.max(1,(max-min)*amp));
-		}
-
-		fn(canvas);
-	});
 }
 
 
@@ -193,11 +134,21 @@ proto.channels = 1;
 
 
 /**
- * Output buffer size
+ * Audio buffer size
  * Smaller sizes are dangerous due to interference w/processor ticks
  * If GC is noticeable - increase that
  */
+proto.audioBufferSize = 256 * 8;
+
+
+/**
+ * Data buffer size
+ * should be more than audio buffer size
+ * to avoid filling with zeros
+ */
 proto.bufferSize = 256 * 16;
+
+
 
 
 

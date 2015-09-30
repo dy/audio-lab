@@ -1,8 +1,6 @@
 
 //TODO: Gain: add value as dB
-//TODO: fill with zeros played sound to avoid disconnected cycles
-//TODO: test very very delayed generator, to always be ahead of the current time
-//TODO: solve generator-related offing to mixer question
+//TODO: remove jitter
 
 * Add visual wrapper
 * Add saving projects

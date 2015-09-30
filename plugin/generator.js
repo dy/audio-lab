@@ -69,12 +69,13 @@ class Generator extends Readable {
 	 * @return {number} [-1..1]
 	 */
 	generate (time) {
-		return Math.random();
+		return Math.sin(Math.PI * 2 * time * 440 + Math.sin(Math.PI * 2 * time * 1) * 40 ) / 10;
+		// return Math.random();
 	}
 }
 
 
-Generator.prototype.blockSize = 126;
+Generator.prototype.blockSize = 512;
 Generator.prototype.rate = 44100;
 
 

@@ -3,7 +3,7 @@
 
 ## Create plugin
 
-Audio-lab is just a GUI constructor for underlying mechanism of connected sound nodes, representing a sound graph. Sound graph can be rendered regardless of audio-lab.
+Audio-lab is a GUI wrapper for underlying mechanism of connected sound nodes, representing a sound graph. In that, sound graph can be viewed and rendered as a plain code, regardless of audio-lab.
 
 Each node in sound graph is represented by a stream instance, able to handle PCM. So basically it is enought to create a Readable or Transform stream and register it in audio-lab.
 

@@ -50,9 +50,7 @@ class Mixer extends Duplex {
 	 * Otherwise there’s infinite recursion.
 	 */
 	_write (chunk, enc, cb) {
-		setTimeout(function () {
-			cb();
-		});
+		setTimeout(cb);
 	}
 	// _writev (chunks, cb) {
 	// 	setTimeout(function () {
@@ -196,7 +194,7 @@ class Mixer extends Duplex {
 }
 
 /** Size of a single chunk to pack output data */
-Mixer.prototype.blockSize = 128;
+Mixer.prototype.blockSize = 64;
 
 
 
