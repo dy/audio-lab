@@ -1,9 +1,8 @@
 
-//TODO: remove jitter
-//TODO: Gain: add value as dB
-
-* Add visual wrapper
+* Add code editor
 * Add saving projects
+* Add code export
+* Test node rendering of a sound
 * Use worker thread to calc data, use it’s events to provide streams. It’s too difficult for mixer to handle’em all, takes all the processor time
 * Ensure format of PCM stream used
 * Implement channels: from mono to 5.1
@@ -146,3 +145,9 @@
 * Server
 * Factorizer
 * Side-chain compressor
+
+
+
+//TODO: Gain: add value as dB
+//TODO: remove any kind of jitter on connection/disconnection
+//TODO: test output on long delayed async generator

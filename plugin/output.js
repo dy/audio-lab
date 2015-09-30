@@ -212,7 +212,7 @@ proto.channels = 1;
  * Smaller sizes are dangerous due to interference w/processor ticks
  * If GC is noticeable - increase that
  */
-proto.audioBufferSize = 256 * 6;
+proto.audioBufferSize = 256 * 4;
 
 
 /**
