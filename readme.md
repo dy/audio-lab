@@ -1,10 +1,90 @@
+# Audio-lab
+
 [Audio-lab](http://dfcreative.github.io/audio-lab) is a tool to set down, share, work out and test musical and sound ideas.
 
 Audio-lab is a GUI wrapper for underlying mechanism of connected sound nodes, representing a sound graph. In that, sound graph can be viewed and rendered as a plain code, regardless of audio-lab.
 
 Each node in sound graph is represented by a stream instance, able to handle PCM. So basically it is enought to create a Readable or Transform stream and register it in audio-lab.
 
-There are two main types of nodes can be created: real-time and async. Real-time nodes are bound to the current time, it is such nodes as output, synth, midi etc.
+There are two main types of nodes can be created: real-time and async. Real-time nodes are bound to the current time, it is such nodes as output, synth, midi etc. Async nodes can render data ahead or be stopped at all. It is such nodes as generator, timer etc. Basically these nodes are fully independent of user control.
+
+
+## Plugins
+
+### Input
+
+* [x] generator
+* [ ] Sequencer
+* [ ] Midi
+* [ ] piano
+
+### Source
+
+* [ ] mp3 file - as PDJ player or vynil
+* Upload/url
+* [ ] Sampler box with beatbox interface
+* [ ] Radio station with tuner interface
+* [ ] Microphone/video interface
+* [ ] Noise generator
+* [ ] Kinds of noise
+* [ ] Oscillator
+* [ ] Shape of wave
+* [ ] WebRTC stream
+* [ ] microphone
+* [ ] youtube
+
+### Synthesis
+
+* [ ] sample-based
+* [ ] additive
+* [ ] subtractive
+* [ ] fm
+* [ ] phase distortion
+* [ ] modulation
+* [ ] [granular](https://en.wikipedia.org/wiki/Granular_synthesis)
+* [ ] physical modelling
+* [ ] sample-based
+* [ ] resynthesis, [LPC](https://en.wikipedia.org/wiki/Linear_predictive_coding)
+* [ ] [essynth](https://en.wikipedia.org/wiki/Essynth)
+
+### Output
+
+* [ ] speaker
+* [ ] recorder
+
+## Transformers
+
+* [ ] Script block
+* [ ] Filter (parametric)
+* [ ] Equaliser
+* [ ] Compressor (special graph)
+* [ ] Harmonizer
+
+## Effects
+
+* [ ] Delay
+* [ ] Reverb
+* ... from pioneer
+
+## Analysers
+
+* [ ] Waveform
+* [ ] Frequency
+* [ ] Spectrogram
+* [ ] Wavelet spectrogram
+* [ ] [Various transforms](https://en.wikipedia.org/wiki/Wigner_distribution_function)
+
+## Other
+
+* [ ] Worker
+* [ ] Server
+* [ ] Factorizer
+* [ ] Side-chain compressor
+* [ ] processor
+* [x] mixer
+* [x] gain
+* [ ] nested-lab
+
 
 
 ## Creating plugin

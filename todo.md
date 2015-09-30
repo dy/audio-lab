@@ -96,56 +96,6 @@
 * FXes as feature of connection
 
 
-## Blocks
-
-### Input
-
-* Sequencer
-* Midi
-
-### Source
-
-* mp3 file - as PDJ player or vynil
-	* Upload/url
-* Sampler box with beatbox interface
-* Radio station with tuner interface
-* Microphone/video interface
-* Noise generator
-	* Kinds of noise
-* Oscillator
-	* Shape of wave
-* WebRTC stream
-
-## Transformers
-
-* [ ] Script block
-* [ ] Filter (parametric)
-* [ ] Equaliser
-* [ ] Compressor (special graph)
-* Harmonizer
-
-## Effects
-
-* Delay
-* Reverb
-* ... from pioneer
-
-## Analysers
-
-* [ ] Waveform
-* [ ] Frequency
-* [ ] Spectrogram
-* [ ] Wavelet spectrogram
-* [ ] [Various transforms](https://en.wikipedia.org/wiki/Wigner_distribution_function)
-
-## Other
-
-* Nested audio-lab subproject
-* Worker
-* Server
-* Factorizer
-* Side-chain compressor
-
 
 
 //TODO: Gain: add value as dB
