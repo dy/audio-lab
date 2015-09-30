@@ -6,6 +6,8 @@
 * Use worker thread to calc data, use it’s events to provide streams. It’s too difficult for mixer to handle’em all, takes all the processor time
 * Ensure format of PCM stream used
 * Implement channels: from mono to 5.1
+* Add online sharing
+
 * Rhythm node
 * Analyser node
 * Normalize graphical view of graph
@@ -13,7 +15,6 @@
 * Make output node show progress of a stream (soundwaves?)
 * (youtube source stream node)[https://github.com/JamesKyburz/youtube-audio-stream]
 * Stop by window unfocus
-* Make output always be in front of current time
 
 
 * Make iPhone start button main start button, ie implement start/stop API

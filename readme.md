@@ -132,9 +132,12 @@ MyPlugin.thumbnail = '';
 MyPlugin.prototype.numberOfInputs = 1;
 MyPlugin.prototype.numberOfOutputs = 0;
 
-//Controlling panel
-MyPlugin.prototype.createElement = function () {
 
+//Create interface for the audio-lab
+//This function will not be called from within node environment
+MyPlugin.prototype.createElement = function () {
+	var element = document.createElement('div');
+	return element;
 };
 
 //Serialize as JSON

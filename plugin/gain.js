@@ -46,7 +46,7 @@ class Gain extends Transform {
 
 
 /** Value as a multiplier */
-Gain.prototype.value = 0.1;
+Gain.prototype.value = 0.5;
 
 
 

@@ -162,7 +162,7 @@ proto.setFunction = function (fn, setValue) {
 };
 
 
-/** Default name */
+/** Audio-lab integration */
 proto.label = 'Processor';
 
 
