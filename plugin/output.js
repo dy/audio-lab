@@ -51,6 +51,8 @@ class Output extends Writable {
 		self.lastTime = self.context.currentTime;
 		self.initTime = self.lastTime;
 
+		console.log(self.initTime);
+
 		//ensure input is not paused
 		self.on('pipe', function (inputStream) {
 			inputStream.resume();
@@ -82,7 +84,7 @@ class Output extends Writable {
 	tick () {
 		var self = this;
 
-		var now = self.context.currentTime;
+		var now = self.context.currentTime - self.initTime;
 		var timeSpent = now - self.lastTime;
 		var realCount = Math.round(now * self.context.sampleRate);
 
