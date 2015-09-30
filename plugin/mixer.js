@@ -52,11 +52,14 @@ class Mixer extends Duplex {
 	_write (chunk, enc, cb) {
 		setTimeout(cb);
 	}
-	// _writev (chunks, cb) {
-	// 	setTimeout(function () {
-	// 		cb();
-	// 	});
-	// }
+
+	/**
+	 * Stacked write helps mixer work faster.
+	 * IDK why. WTFNOTE.
+	 */
+	_writev (chunks, cb) {
+		setTimeout(cb);
+	}
 
 
 	/**
@@ -181,7 +184,7 @@ class Mixer extends Duplex {
 
 		//set end flag
 		self.controllers[streamIdx]._write = null;
-		self.controllers[streamIdx].end();
+		// self.controllers[streamIdx].end();
 		stream.unpipe(self.controllers[streamIdx]);
 
 		//forget about controller

@@ -1,6 +1,6 @@
 
-//TODO: Gain: add value as dB
 //TODO: remove jitter
+//TODO: Gain: add value as dB
 
 * Add visual wrapper
 * Add saving projects

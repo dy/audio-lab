@@ -6,7 +6,7 @@
 import { Writable } from 'stream';
 import context from 'audio-context';
 import extend from 'xtend/mutable';
-import raf from 'component-raf';
+import {log} from '../lib/debug';
 
 
 /**
@@ -36,12 +36,6 @@ class Output extends Writable {
 			self.context = context;
 		}
 
-		//offset identifies last loaded data within audio buffer
-		self.offset = 0;
-
-		//count represents the absolute data loaded within audio buffer
-		self.count = 0;
-
 		//audioBufferSourceNode, main output
 		self.bufferNode = self.context.createBufferSource();
 		self.bufferNode.loop = true;
@@ -53,49 +47,116 @@ class Output extends Writable {
 
 		//ready data to play
 		self.data = [];
+
 		self.lastTime = self.context.currentTime;
+		self.initTime = self.lastTime;
 
-
-		//audio buffer realtime ticked cycle
-		self.bufferInterval = setInterval(function () {
-			var timeSpent = self.context.currentTime - self.lastTime;
-			var realCount = Math.floor(self.context.currentTime * self.context.sampleRate);
-
-			//min chunk size is the time passed
-			var chunkSize = Math.floor(timeSpent * self.context.sampleRate);
-
-			//max chunk size is avail space up the next audio buffer cycle
-			if (self.count <= realCount) {
-				chunkSize = Math.max(chunkSize, (realCount - self.count) + self.buffer.length );
-			}
-
-			//fill chunk with available data and the rest - with zeros
-			var channelData = self.buffer.getChannelData(0);
-			var value;
-
-			for (var i = 0; i < chunkSize; i++) {
-				if (self.data.length) {
-					value = self.data.shift();
-				}
-				else {
-					value = 0;
-				}
-
-				channelData[self.offset++] = value;
-				self.count++;
-
-				// reset offset
-				if (self.offset >= channelData.length) {
-					self.offset = 0;
-				}
-			}
-
-			self.emit('tick');
-
-			self.lastTime = self.context.currentTime;
+		//ensure input is not paused
+		self.on('pipe', function (inputStream) {
+			inputStream.resume();
 		});
 
+		//offset identifies last loaded data within audio buffer
+		self.offset = 0;
+
+		//count represents the absolute data loaded within audio buffer
+		self.count = 0;
+
+		//NOTE: when the initial time is > 0.02, it doesn’t jitter.
+
+		//audio buffer realtime ticked cycle
+		self.tick();
+		self.bufferInterval = setInterval(self.tick.bind(self));
+
+		//debugging sets
+		self.debug = true;
+
 		return self;
+	}
+
+
+	/**
+	 * Ticking function
+	 * Fills the audio buffer
+	 */
+	tick () {
+		var self = this;
+
+		var now = self.context.currentTime;
+		var timeSpent = now - self.lastTime;
+		var realCount = Math.round(now * self.context.sampleRate);
+
+		//min chunk size is the time passed
+		var chunkSize = Math.round(timeSpent * self.context.sampleRate);
+
+		//max chunk size is avail space up the next audio buffer cycle
+		if (self.count < realCount) {
+			chunkSize = Math.max(chunkSize, (realCount - self.count) + self.buffer.length );
+		}
+
+		//fill chunk with available data and the rest - with zeros
+		var channelData = self.buffer.getChannelData(0);
+		var value;
+		var isZero = false;
+
+		for (var i = 0; i < chunkSize; i++) {
+			if (self.data.length) {
+				value = self.data.shift();
+			}
+			else {
+				isZero = true;
+				value = 0;
+			}
+
+			channelData[self.offset] = value;
+
+			self.offset++;
+			self.count++;
+
+			// reset offset
+			if (self.offset >= channelData.length) {
+				self.offset = 0;
+			}
+		}
+
+		self.emit('tick');
+
+		self.lastTime = now;
+
+		/*
+		//debug
+		var count = self.count;
+		var offset = self.offset;
+
+		// var data = Array.from(self.data);
+		var data = new Float32Array(self.buffer.length);
+		self.buffer.copyFromChannel(data, 0);
+
+		draw(data, function (canvas) {
+			var ctx = canvas.getContext('2d');
+			var width = canvas.width;
+			var height = canvas.height;
+
+			var step = (width / data.length);
+
+			//paint current time
+			var currentTimeOffset = Math.floor(realCount % data.length);
+			ctx.fillStyle = 'rgba(0,0,255,.2)';
+			ctx.fillRect(currentTimeOffset * step, 0, 1, height);
+			ctx.fillRect(currentTimeOffset * step, 0, 1, height);
+
+			//paint filled chunk
+			ctx.fillStyle = 'rgba(255,0,0,.2)';
+			ctx.fillRect(offset * step - 2, 0, 2, height);
+			ctx.fillRect(offset * step - 2, 0, 2, height);
+
+			//draw stats
+			ctx.fillStyle = 'rgba(255,255,255,.8)';
+			ctx.fillRect(0, height - 20, height - 5, width - 10);
+			ctx.fillStyle = 'black';
+			ctx.fillText(`${ realCount }→${ realCount + data.length } ${ count } ${ isZero }`, 5, height - 5, width - 10);
+		});
+		*/
 	}
 
 
@@ -104,7 +165,6 @@ class Output extends Writable {
 	 */
 	_write (chunk, encoding, callback) {
 		var self = this;
-
 		var chunkLength = Math.floor(chunk.length / 4);
 
 		//if data buffer is full - wait till next tick
@@ -123,6 +183,20 @@ class Output extends Writable {
 
 		callback();
 	}
+
+	/** Write set of chunks */
+	_writev (chunks, callback) {
+		var self = this;
+		var chunk;
+		chunks.forEach(function (writeReq) {
+			var chunk = writeReq.chunk;
+			var chunkLen = Math.floor(chunk.length / 4);
+			for (var i = 0; i < chunkLen; i++) {
+				self.data.push(chunk.readFloatLE(i*4));
+			}
+		});
+		callback();
+	}
 }
 
 
@@ -138,7 +212,7 @@ proto.channels = 1;
  * Smaller sizes are dangerous due to interference w/processor ticks
  * If GC is noticeable - increase that
  */
-proto.audioBufferSize = 256 * 8;
+proto.audioBufferSize = 256 * 6;
 
 
 /**
@@ -146,7 +220,7 @@ proto.audioBufferSize = 256 * 8;
  * should be more than audio buffer size
  * to avoid filling with zeros
  */
-proto.bufferSize = 256 * 16;
+proto.bufferSize = proto.audioBufferSize * 2;
 
 
 

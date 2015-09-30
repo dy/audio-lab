@@ -4,6 +4,7 @@
 
 import { Readable } from 'stream';
 import extend from 'xtend/mutable';
+import {log} from '../lib/debug';
 
 
 /**
@@ -69,13 +70,13 @@ class Generator extends Readable {
 	 * @return {number} [-1..1]
 	 */
 	generate (time) {
-		return Math.sin(Math.PI * 2 * time * 440 + Math.sin(Math.PI * 2 * time * 1) * 40 ) / 10;
+		return Math.sin(Math.PI * 2 * time * 110 + Math.sin(Math.PI * 2 * time * 1) * 20 ) / 10;
 		// return Math.random();
 	}
 }
 
 
-Generator.prototype.blockSize = 512;
+Generator.prototype.blockSize = 64;
 Generator.prototype.rate = 44100;
 
 
