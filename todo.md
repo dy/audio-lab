@@ -1,5 +1,3 @@
-
-* Add code editor
 * Add saving projects
 * Add code export
 * Test node rendering of a sound
@@ -97,6 +95,7 @@
 * FXes as feature of connection
 
 
+* Export as a code for substack’s studio, basically, fully programmed sound, dependless of specific nodes.
 
 
 //TODO: Gain: add value as dB

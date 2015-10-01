@@ -51,7 +51,7 @@ class Output extends Writable {
 		self.lastTime = self.context.currentTime;
 		self.initTime = self.lastTime;
 
-		console.log(self.initTime);
+		// console.log(self.initTime);
 
 		//ensure input is not paused
 		self.on('pipe', function (inputStream) {
@@ -68,6 +68,7 @@ class Output extends Writable {
 
 		//audio buffer realtime ticked cycle
 		self.tick();
+
 		self.bufferInterval = setInterval(self.tick.bind(self));
 
 		//debugging sets

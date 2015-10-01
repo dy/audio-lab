@@ -8,6 +8,14 @@ Each node in sound graph is represented by a stream instance, able to handle PCM
 
 There are two main types of nodes can be created: real-time and async. Real-time nodes are bound to the current time, it is such nodes as output, synth, midi etc. Async nodes can render data ahead or be stopped at all. It is such nodes as generator, timer etc. Basically these nodes are fully independent of user control.
 
+## Supported platforms
+
+* [x] Chrome
+* [ ] Firefox
+* [ ] IE (no web-audio support)
+* [ ] Safari
+* [ ] Node
+
 
 ## Plugins
 
