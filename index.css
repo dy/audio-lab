@@ -198,6 +198,10 @@ input {
 .block-connecting .block-in {
 	visibility: hidden;
 }
+.block-error-message {
+	display: block;
+	color: rgb(255,200,200);
+}
 
 
 /** Connections */

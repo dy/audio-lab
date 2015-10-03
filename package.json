@@ -57,6 +57,7 @@
     "queried": "^1.4.1",
     "resizable": "^1.0.4",
     "st8": "^1.1.0",
+    "stacktrace-parser": "^0.1.3",
     "waaclock": "^0.5.2",
     "web-midi": "^0.6.0",
     "webaudio": "^2.0.0",

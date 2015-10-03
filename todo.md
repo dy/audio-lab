@@ -1,3 +1,7 @@
+* remove generator jittering
+* create repeatin cycle wave demo
+* save demo on github
+
 * Add saving projects
 * Add code export
 * Test node rendering of a sound
