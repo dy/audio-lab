@@ -11,3 +11,4 @@ GUI tool for audio experiments.
 * [web-audio-ui](https://github.com/wham-js/web-audio-ui)
 * [web-audio-designer](https://github.com/g200kg/WebAudioDesigner)
 * [web-audio-tool](https://github.com/petervdn/webaudiotool)
+* [audio-dsp-playground](https://github.com/acarabott/audio-dsp-playground)
