@@ -13,3 +13,4 @@ GUI tool for audio experiments.
 * [web-audio-tool](https://github.com/petervdn/webaudiotool)
 * [audio-dsp-playground](https://github.com/acarabott/audio-dsp-playground)
 * [blokdust](https://github.com/BlokDust/BlokDust)
+* [webaudio-generator](https://github.com/ISNIT0/webaudio-generator)
