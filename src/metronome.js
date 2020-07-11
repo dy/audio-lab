@@ -61,7 +61,7 @@ export default class MetronomeElement extends HTMLElement {
   set tempo(value=120){
     this.setAttribute('tempo', value)
     this.metronome.tempo =
-    this.shadow.children.tempo = value
+    this.elements.tempo.value = value
   }
 }
 
