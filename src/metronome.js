@@ -47,6 +47,7 @@ export default class MetronomeElement extends HTMLElement {
       }
     }
 
+    this.elements.tempo.onchange =
     this.elements.tempo.oninput = e => {
       this.metronome.tempo = +e.target.value
     }
@@ -57,6 +58,7 @@ export default class MetronomeElement extends HTMLElement {
   get tempo() { return +this.getAttribute('tempo') || 120 }
   set tempo(value=120){
     this.setAttribute('tempo', value)
+    this.metronome.tempo =
     this.shadow.children.tempo = value
   }
 }
