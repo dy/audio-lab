@@ -51,7 +51,7 @@ export default class MetronomeElement extends HTMLElement {
 
     this.elements.tempo.onchange =
     this.elements.tempo.oninput = e => {
-      this.metronome.tempo = +e.target.value
+      this.tempo = +e.target.value
     }
 
     // actual audio node
