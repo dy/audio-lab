@@ -49,7 +49,6 @@ export default class MetronomeElement extends HTMLElement {
 
     this.elements.tempo.oninput = e => {
       this.metronome.tempo = +e.target.value
-      if (this.metronome.playing) this.metronome.stop(), this.metronome.start()
     }
 
     // actual audio node
@@ -73,3 +72,4 @@ customElements.define('a-metronome', MetronomeElement)
 // class MetronomeThumbnail extends HTMLElement {
 
 // }
+
