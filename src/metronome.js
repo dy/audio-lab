@@ -40,10 +40,12 @@ export default class MetronomeElement extends HTMLElement {
       if (this.metronome.playing) {
         this.elements.start.textContent = 'Start'
         this.metronome.stop()
+        this.dispatchEvent(new Event('stop'))
       }
       else {
         this.elements.start.textContent = 'Stop'
         this.metronome.start()
+        this.dispatchEvent(new Event('start'))
       }
     }
 
