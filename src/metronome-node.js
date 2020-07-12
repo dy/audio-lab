@@ -14,9 +14,14 @@ export default class MetronomeNode {
     this.playing = false;
 
     this.tickSource = ctx.createOscillator();
+    // this.tickSource.type = 'sine';
+    var real = new Float32Array([0,0,.00,0,.00,0,0,0,1,0,0]);
+    var imag = new Float32Array([0,0,0,0,0,0,0,0,0,0,0]);
+    var wave = ctx.createPeriodicWave(real, imag);
+    this.tickSource.setPeriodicWave(wave);
+
     this.tickVolume = ctx.createGain();
-    this.tickSource.type = 'sine';
-    this.tickSource.frequency.value = 1080;
+    this.tickSource.frequency.value = 1080/8;
     this.tickVolume.gain.value = 0;
 
     this.tickSource.connect(this.tickVolume);
@@ -27,8 +32,10 @@ export default class MetronomeNode {
   beep() {
     let time = ctx.currentTime
     this.tickVolume.gain.cancelScheduledValues(time)
-    this.tickVolume.gain.value = 1
-    this.tickVolume.gain.setValueAtTime(0, time + 0.001)
+    // this.tickVolume.gain.value = 1
+    // this.tickVolume.gain.setValueAtTime(0, time + 0.1)
+    this.tickVolume.gain.setTargetAtTime(1, time + 0.01, .0008)
+    this.tickVolume.gain.setTargetAtTime(0, time + 0.02, .0008)
   }
 
   start() {
