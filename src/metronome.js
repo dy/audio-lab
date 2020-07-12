@@ -26,7 +26,7 @@ export default class MetronomeElement extends HTMLElement {
       </div>
       <div>
         <label>Acclerate</label>
-        <input title="Acclerate" name="accleration" type="range" min=0 max=100 value=10>
+        <input title="Acclerate" name="accleration" type="range" min=0 max=100 value=0>
       </div>
     </form>
     <style>
@@ -44,6 +44,9 @@ export default class MetronomeElement extends HTMLElement {
     </style>
     `
     this.elements = this.shadow.children[0].elements
+
+    this.accleration = this.accleration
+
     this.elements.start.onclick = () => {
       if (this.metronome.playing) this.stop()
       else this.start()
@@ -57,6 +60,7 @@ export default class MetronomeElement extends HTMLElement {
     this.elements.accleration.onchange =
     this.elements.accleration.oninput = e => {
       this.accleration = +e.target.value
+      this.acclerate()
     }
 
     // actual audio node
@@ -68,18 +72,24 @@ export default class MetronomeElement extends HTMLElement {
     this.elements.start.textContent = 'Stop'
     this.metronome.start()
     this.dispatchEvent(new Event('start'))
-
-    this._acclerateId = setInterval(() => {
-      this.tempo = this.metronome.tempo + 10
-    }, 2800)
+    this.acclerate()
   }
   stop() {
     console.log('stop')
     this.elements.start.textContent = 'Start'
     this.metronome.stop()
     this.dispatchEvent(new Event('stop'))
+    clearTimeout(this._acclerateId)
+  }
 
-    clearInterval(this._acclerateId)
+  acclerate() {
+    clearTimeout(this._acclerateId)
+    if (this.accleration) {
+      this._acclerateId = setTimeout(() => {
+        this.tempo = this.metronome.tempo + 10
+        this.acclerate()
+      }, (101 - this.accleration) * 1000)
+    }
   }
 
   get tempo() { return +this.getAttribute('tempo') || 120 }
@@ -88,9 +98,10 @@ export default class MetronomeElement extends HTMLElement {
     this.metronome.tempo =
     this.elements.tempo.value = value
   }
-  get accleration() { return +this.getAttribute('accleration') || 10 }
-  set accleration(value=10) {
+  get accleration() { return +this.getAttribute('accleration') }
+  set accleration(value=0) {
     this.setAttribute('accleration', value)
+    this.elements.accleration.title = value ? `+10bpm each ${101 - value}s` : 'no accleration'
   }
 }
 
