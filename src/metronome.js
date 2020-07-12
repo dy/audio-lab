@@ -70,6 +70,7 @@ export default class MetronomeElement extends HTMLElement {
   start() {
     console.log('start')
     this.elements.start.textContent = 'Stop'
+    clearTimeout(this._acclerateId)
     this.metronome.start()
     this.dispatchEvent(new Event('start'))
     this.acclerate()
@@ -77,9 +78,9 @@ export default class MetronomeElement extends HTMLElement {
   stop() {
     console.log('stop')
     this.elements.start.textContent = 'Start'
+    clearTimeout(this._acclerateId)
     this.metronome.stop()
     this.dispatchEvent(new Event('stop'))
-    clearTimeout(this._acclerateId)
   }
 
   acclerate() {

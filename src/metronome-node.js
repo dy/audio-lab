@@ -55,7 +55,7 @@ export default class MetronomeNode {
 
   stop() {
     this.playing = false;
-    this.tickVolume.gain.value = 0;
     this.tickVolume.gain.cancelScheduledValues(ctx.currentTime);
+    this.tickVolume.gain.value = 0;
   }
 }
