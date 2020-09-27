@@ -2,6 +2,8 @@
 
 GUI tool for audio experiments.
 
+[TEMPORARILY CLOSED DOWN]
+
 ## Similar projects
 
 * [dataglow-webaudio](https://github.com/forresto/dataflow-webaudio)
