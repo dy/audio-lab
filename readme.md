@@ -18,3 +18,4 @@ GUI tool for audio experiments.
 * [webaudio-generator](https://github.com/ISNIT0/webaudio-generator)
 * [audionodes](https://audionodes.com/online/)
 * [web-audio-patcher](https://github.com/Fr0stbyteR/webaudio-patcher)
+* [noisecraft](https://github.com/maximecb/noisecraft)
