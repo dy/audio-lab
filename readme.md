@@ -6,6 +6,7 @@ GUI tool for audio experiments.
 
 ## Similar projects
 
+* [react-web-audio-graph](https://github.com/michalochman/react-web-audio-graph)
 * [dataglow-webaudio](https://github.com/forresto/dataflow-webaudio)
 * [webaudio-playground](https://github.com/cwilso/WebAudio)
 * [sound.io](https://github.com/soundio/soundio)
